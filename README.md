@@ -1,3 +1,4 @@
+* [2018-08-16 JSONWebToken.swift를 통해서 본 variable 확장하기, builder 패턴 사용하기](2018-08-16-ExtendingVariablesAndUsingBuilderPattern.md)
 * [2018-06-19 estimated height가 작을 때 table view가 튀어오르는 현상](2018-06-19-tableview-pop-when-estimate-height-is-small.md)
 * [2018-06-19 Stack View subview hidden시 constraints 문제](2018-06-19-Stack-View-constraints.md)
 * [2018-06-12-RxSwift-기본-개념](2018-06-12-RxSwift-기본-개념.md)
