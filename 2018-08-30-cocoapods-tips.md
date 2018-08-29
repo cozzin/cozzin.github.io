@@ -17,22 +17,11 @@ pod 'Alamofire', '~> 4.5', :inhibit_warnings => true
 
 #### 2. 모든 pod에 inhibit_warnings 옵션 적용하기
 
-다들 개발자들도 귀찮은 것을 싫어하지 않을까? 싶어서 검색해봤다.
-CocoaPods 깃헙에 아주 반가운 이슈가 올라와 있었다.
-[inhibit_all_warnings! doesn't inhibit all warnings ;-) #4423](https://github.com/CocoaPods/CocoaPods/issues/4423#issuecomment-316208698)
-
-파일 맨 마지막에 아래와 같은 코드를 넣으면
-`GCC_WARN_INHIBIT_ALL_WARNINGS` 옵션을 모두 활성화 시켜준다.
+다들 개발자들도 귀찮은 것을 싫어하지 않을까? 싶어서 검색해봤다. 
+https://github.com/ClintJang/cocoapods-tips
 ```
-post_install do |installer|
-    installer.pods_project.targets.each do |target|
-        target.build_configurations.each do |config|
-            config.build_settings['GCC_WARN_INHIBIT_ALL_WARNINGS'] = "YES"
-        end
-    end
-end
+inhibit_all_warnings!
 ```
-
 앞으로 pod이 새롭게 추가되어도 pod 설치시에 위의 스크립트가 돌면서 warning을 만나지 않게 되었다. 🎉
 
 ## 타겟별 공통으로 사용되는 pod 파일 묶어주기
