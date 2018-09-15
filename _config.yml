@@ -31,6 +31,7 @@ plugins:
 search: true
 disqus:
     shortname: cozzin
+google_analytics: UA-125862477-1
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
