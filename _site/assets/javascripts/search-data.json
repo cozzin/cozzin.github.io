@@ -1,0 +1,81 @@
+var store = [{
+        "title": "Welcome to Jekyll!",
+        "excerpt":"You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when...","categories": ["jekyll","update"],
+        "tags": [],
+        "url": "http://localhost:4000/jekyll/update/0000/01/01/welcome-to-jekyll.html"
+      },{
+        "title": "swift dynamic",
+        "excerpt":"dynamic objc 메세지 호출(메세지 디스패치) 메서드를 호출 하거나 프로퍼티를 참조하는 것 objc 런타임의 동적 바인딩 속성과 관련 호출자가 “메서드 f를 실행” 메세지를 객체에 전송하면 객체는 구현체를 찾아 실행하게 됨 여기서 메서드를 찾는다 는 것이 중요 정적 디스패치의 경우 실행될 구현코드가 고정되어 있음 동적 디스패치의 경우 구현코드를 바꿔치기 할 수 있음...","categories": ["swift"],
+        "tags": [],
+        "url": "http://localhost:4000/swift/2017/12/26/Swift-dynamic.html"
+      },{
+        "title": "iOS zPosition",
+        "excerpt":"iOS에서 zPosition을 변경해서 UI로 확인할 때는 뒤에 가있는 것으로 보이는데, 실제로 터치했을 때 우선순위가 여전히 앞서 있어서 뒤에 있는 뷰가 터치되는 현상이 발생했다. zPosition을 변경해서 뒤에 있는 것으로 보이게 할 때는 이러한 오류가 발생할 수 있음을 염두해두고 작업하자. 아래는 플레이그라운드에서 테스트하면서 썼던 예제 코드이다. //: Playground - noun: a place...","categories": ["swift"],
+        "tags": [],
+        "url": "http://localhost:4000/swift/2017/12/26/zposition.html"
+      },{
+        "title": "memory counting",
+        "excerpt":"1. strong을 사용하는 경우 내가 정의하는데 중요하다고 참조를 보장해야 하는 경우와 IB에서 아웃렛(IBOutlet)을 연결하는 경우(컨트롤변수, IBOutlet) 메인뷰는 strong을 기본(recommand)으로 잡아준다ex) XXXAppDelegate.h @property (strong, nonatomic) UIWindow *window;@property (strong, nonatomic) BIDViewController *viewController;ex) XXXViewController.h @property (weak, nonatomic) IBOutlet UIView * backView;##2. weak를 사용하는 경우 내가 정의하는데 중요하다고 참조 보장할 필요가 없는 경우와 IB에서 아웃렛(IBOutlet)을 연결하는 경우(컨트롤변수,  IBOutlet) 하위뷰는 weak를 기본(recommand)으로 잡아준다 보통, delegate는 weak로 지정한다....","categories": ["swift"],
+        "tags": [],
+        "url": "http://localhost:4000/swift/2017/12/28/Memory-counting.html"
+      },{
+        "title": "iOS 메모리 관리",
+        "excerpt":"1. 레퍼런스 카운트 기본 개념 참조하고 있는 객체의 카운트를 1 올려준다. (retain: 보존하다) 더 이상 사용하지 않으면 카운트를 1 내려준다. (release) 카운트가 0이 되면 객체가 해제된다. (dealloc)자동 해제 NSAutoreleasePool 다양한 객체의 메모리를 하나하나 관리하기 어렵다. autorelease 메세지를 보내두면, pool이 release될 때 등록된 인스터들 모두에게 release 메세지를 전달하게 된다. retain 횟수와...","categories": ["swift"],
+        "tags": [],
+        "url": "http://localhost:4000/swift/2017/12/29/Memory-management.html"
+      },{
+        "title": "Associated Types",
+        "excerpt":"요약 asscociatedtype은 protocol에서 구체적인 type을 정하지 않고 해당 프로토콜을 따르는 곳에서 type을 지정할 수 있도록 하는 keyword 이다. 프로토콜을 따르는 곳에서는 typealias로 구체적인 type을 지정할 수 있다.정의 프로토콜을 정의할 때 associatedType을 쓰는 것이 유용할 때가 있다. Associated type은 프로토콜의 일부가 되는 타입의 placeholder name을 제공한다. 알쏭달쏭하다. typealias와 어떻게 다른거지? Associated...","categories": ["swift"],
+        "tags": [],
+        "url": "http://localhost:4000/swift/2018/02/28/associatedType.html"
+      },{
+        "title": "RxDataSource 예제를 보며 RxSwift 익히기",
+        "excerpt":"RxSwift 개념잡기 목표: table view form library를 rx스럽게 작성하기예제 RxSwift RxSwift 프로젝트에 포함된 예제를 먼저 살펴보자 SimpleTableViewExampleViewController tableView.rx .modelSelected(String.self) .subscribe(onNext: { value in DefaultWireframe.presentAlert(\"Tapped `\\(value)`\") }) .disposed(by: disposeBag)tableView.rx .itemAccessoryButtonTapped .subscribe(onNext: { indexPath in DefaultWireframe.presentAlert(\"Tapped Detail @ \\(indexPath.section),\\(indexPath.row)\") }) .disposed(by: disposeBag)배울점 modelSelected는 있는 줄 몰라서 못썼던 부분이다.itemSelected 말고 modelSelected를 바로 사용해서...","categories": ["swift"],
+        "tags": [],
+        "url": "http://localhost:4000/swift/2018/06/11/RxSwift-tableview.html"
+      },{
+        "title": "RxSwift 개념잡기",
+        "excerpt":"RxSwift 개념잡기 목표: 스트림 기반 기본 동작에 대한 이해개념 절차형 프로그래밍의 한계: 복잡도가 올라갈 수록 유지보수하기 어려워 진다. 스레드에 따른 결과가 달라진다. 그래서 콜백/리스너 개념을 도입콜백/리스너의 단점 예측 불가능한 순서: 이벤트가 도착하는 순서는 Observer를 등록한 순서에 따라 변경될 수 있음 첫 번째 이벤트 소실 스레드 문제 콜백 누수: Observer를 해제하는...","categories": ["RxSwift"],
+        "tags": [],
+        "url": "http://localhost:4000/rxswift/2018/06/11/RxSwift-%EA%B8%B0%EB%B3%B8-%EA%B0%9C%EB%85%90.html"
+      },{
+        "title": "Stack View subview hidden시 constraints 문제",
+        "excerpt":"Stack View subview hidden시 constraints 문제 stack view에 두 개의 label이 있고 spacing을 설정한 상태에서하나의 label을 hidden 하게 되었을 때 constraints 가 깨졌다는 문구를 볼 수 있다. hidden 시키면 stack view가 친절하게 모든 constraints를 설정해주는 줄 알았는데spacing이 0 이상으로 설정되어 있으면 constraints를 어떻게 변경해줘야 하는지 모호해지는 듯 하다. 이를 해결하기...","categories": ["swift"],
+        "tags": [],
+        "url": "http://localhost:4000/swift/2018/06/19/Stack-View-constraints.html"
+      },{
+        "title": "myplants에서 사용하는 오픈소스",
+        "excerpt":"단순히 오픈소스 라이선스 정리를 위한 포스팅입니다 myplants에서 사용하는 오픈소스 SnapKit Copyright (c) 2011-Present SnapKit Team - https://github.com/SnapKitPermission is hereby granted, free of charge, to any person obtaining a copyof this software and associated documentation files (the \"Software\"), to dealin the Software without restriction, including without limitation the rightsto use, copy,...","categories": ["iOS,","MyPlants"],
+        "tags": [],
+        "url": "http://localhost:4000/ios,/myplants/2018/06/19/myplants-using-opensource.html"
+      },{
+        "title": "estimated height가 작을 때 table view가 튀어오르는 현상",
+        "excerpt":"table view에서 estimated height가 row height 보다 작은 경우 reloadData() 할 때 스크롤이 튀어오르는 문제가 있다.scroll offset을 기억해서 조정하는 방법도 있는 듯하지만 근본적인 문제를 해결하는 방법이 아닌것 같아서 다른 방법을 한동안 찾아봤다. 제일 처음 table view를 그려줄 때는 이상 없고, reload 될 때부터 문제가 발생한다.그렇다면 cell 이 화면에 그려진 높이를...","categories": ["swift"],
+        "tags": [],
+        "url": "http://localhost:4000/swift/2018/06/19/tableview-pop-when-estimate-height-is-small.html"
+      },{
+        "title": "MyPlants 개인정보 처리문서",
+        "excerpt":"단순히 MyPlants 개인정보 처리에 대한 정보 명시를 위한 포스팅입니다. 개인정보의 처리 목적 (‘ ’이하 ‘My Plants’) 은(는) 다음의 목적을 위하여 개인정보를 처리하고 있으며, 다음의 목적 이외의 용도로는 이용하지 않습니다. 고객 가입의사 확인, 고객에 대한 서비스 제공에 따른 본인 식별.인증, 회원자격 유지.관리, 물품 또는 서비스 공급에 따른 금액 결제, 물품 또는...","categories": ["swift"],
+        "tags": [],
+        "url": "http://localhost:4000/swift/2018/06/19/myplants-info.html"
+      },{
+        "title": "Builder 패턴 사용하기",
+        "excerpt":"JSONWebToken.swift를 통해서 본 variable 확장하기, builder 패턴 사용하기 JSONWebToken.swift readme 파일을 한번 살펴보다가 흥미로운 코드를 발견했다. class의 variable을 계속해서 확장하게 만들 수 있을까? var claims = ClaimSet()claims.issuer = \"fuller.li\"claims.issuedAt = Date()claims[\"custom\"] = \"Hi\"JWT.encode(claims: claims, algorithm: .hs256(\"secret\".data(using: .utf8)!))claims[\"custom\"] 으로 variable을 추가하는 모습을 볼 수 있다.내부적으로는 class안에 dictionary를 두고 모든 variable을 담아뒀기...","categories": ["swift"],
+        "tags": [],
+        "url": "http://localhost:4000/swift/2018/08/16/ExtendingVariablesAndUsingBuilderPattern.html"
+      },{
+        "title": "What's New in Testing",
+        "excerpt":"What’s New in Testing WWDC 영상 보면서 정리했습니다.https://developer.apple.com/videos/play/wwdc2018/403/ Code coverage Performance 로딩 시간: XCode9 에서 6.5초 걸리던 것이 XCode9.3에서는 0.3초 걸린다. coverage 파일 사이즈: XCode9에서 214MB -&gt; XCode9.3에서 18.5MB C++ header 파일의 Code coverage도 측정해서 통과되지 못한 코드에 빨간색으로 표시해준다.Target Selection Code coverage 옵션을 enabled/disabled 로 설정해줄 수 있다.xconv 커멘드...","categories": ["swift"],
+        "tags": [],
+        "url": "http://localhost:4000/swift/2018/08/25/WWDC-What's-New-in-Testing.html"
+      },{
+        "title": "CocoaPods 꿀팁",
+        "excerpt":"CocoaPods warning 제거하기 ⚠️ 1. inhibit_warnings 옵션 적용하기 iOS 프로젝트에 오픈소스를 간편하게 가져올 수 있도록 도와주는 cocoapods를 사용하다 보면 warning이 많이 발생하는 것을 볼 수 있다.내가 작성한 코드도 아닌데 warning이 이렇게나 많이 뜨는것은 좀 억울하다는 생각이 들었다. 때마침 Xcode 에서 Pod 프로젝트의 경고 표시 없애기 링크가 보이길래 적용해보았다.경고를 무시하고 싶은...","categories": ["cocoapods"],
+        "tags": [],
+        "url": "http://localhost:4000/cocoapods/2018/08/30/cocoapods-tips.html"
+      },{
+        "title": "jekyll 테마 적용하기",
+        "excerpt":"테마 고르기 개발 과정에 대한 기록을 하지 않다보니 어떤 문제를 해결하려 했고, 발견한 것은 무엇인지 제대로 정리가 되지 않는 느낌을 받았다. 이미 사용중인 github pages가 있어서 테마를 조금 바꿔서 활용해보고 싶다는 생각이 들었다. 테마를 바꾸는 이유는 다음과 같다. 블로그 내 글을 검색할 수 있으면 좋겠다 글 목록을 자동으로 리스팅 해주면...","categories": ["jekyll"],
+        "tags": [],
+        "url": "http://localhost:4000/jekyll/2018/08/30/jekyll-theme.html"
+      }]
