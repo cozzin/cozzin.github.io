@@ -1,3 +1,10 @@
+---
+layout: post
+title:  "swift dynamic"
+date:   2017-12-26 00:00:00 +0900
+categories: swift
+---
+
 ## dynamic
 ### objc
 * 메세지 호출(메세지 디스패치)

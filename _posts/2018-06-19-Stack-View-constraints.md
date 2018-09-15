@@ -1,3 +1,10 @@
+---
+layout: post
+title:  "Stack View subview hidden시 constraints 문제"
+date:   2018-06-19 00:00:00 +0900
+categories: swift
+---
+
 ## Stack View subview hidden시 constraints 문제
 
 stack view에 두 개의 label이 있고 spacing을 설정한 상태에서

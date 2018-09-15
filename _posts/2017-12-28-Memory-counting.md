@@ -1,3 +1,10 @@
+---
+layout: post
+title:  "memory counting"
+date:   2017-12-28 00:00:00 +0900
+categories: swift
+---
+
 ## 1. strong을 사용하는 경우
 * 내가 정의하는데 중요하다고 참조를 보장해야 하는 경우와 IB에서 아웃렛(IBOutlet)을 연결하는 경우(컨트롤변수, IBOutlet) 메인뷰는 strong을 기본(recommand)으로 잡아준다
 
@@ -49,13 +56,13 @@ ex) XXXTableViewCell
 * 하지만 제대로 이해가 되지 않는다. NSString과 copy에 대한 예시를 다시 한번 보자.
 
 ### NSString properties를 strong으로 설정한 경우
-```Objc
+```objc
 @interface Book: NSObject
 @property (strong, nonatomic) NSString *title;
 @end
 ```
 
-```Objc
+```objc
 - (void)stringExample {
   NSMutableString *bookTitle = [NSMutableString stringWithString:@"Best book ever"];
   Book *book = [[Book alloc] init];
@@ -66,13 +73,13 @@ ex) XXXTableViewCell
 ```
 
 ### NSString properties를 copy로 설정한 경우
-```Objc
+```objc
 @interface Book: NSObject
 @property (copy, nonatomic) NSString *title;
 @end
 ```
 
-```Objc
+```objc
 - (void)stringExample {
   NSMutableString *bookTitle = [NSMutableString stringWithString:@"Best book ever"];
   Book *book = [[Book alloc] init];

@@ -1,5 +1,13 @@
+---
+layout: post
+title:  "What's New in Testing"
+date:   2018-08-25 00:00:00 +0900
+categories: swift
+---
+
 ## What's New in Testing
 
+WWDC 영상 보면서 정리했습니다.
 https://developer.apple.com/videos/play/wwdc2018/403/
 
 ## Code coverage

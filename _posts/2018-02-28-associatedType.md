@@ -1,4 +1,9 @@
-# Associated Types
+---
+layout: post
+title:  "Associated Types"
+date:   2018-02-28 00:00:00 +0900
+categories: swift
+---
 ## 요약
 * `asscociatedtype`은 protocol에서 구체적인 type을 정하지 않고 해당 프로토콜을 따르는 곳에서 type을 지정할 수 있도록 하는 keyword 이다.
 * 프로토콜을 따르는 곳에서는 `typealias`로 구체적인 type을 지정할 수 있다.
@@ -10,7 +15,7 @@
 Associated type으로 사용되기 위한 실제 type은 프로토콜이 채택되기 전까지는 구체화 되어 있지 않다. `associatedtype`이라는 키워드를 통해 사용된다.
 
 ## 예시
-```Swift
+```swift
 protocol Container {
   associatedtype Item
   mutating func append(_ itme: Item)
@@ -34,7 +39,7 @@ Container 프로토콜을 따르는 타입은 그것이 저장하고 있는 타�
 그럼에도 불구하고, Item alias는 Container안에 있는 item의 type을 언급할 수 있는 방법이 있다. 그리고 `appned(_:)` 메소드에서 쓰일 type을 정의할 수 있고, Container가 작동하기 기대하는 대로 강제할 수 있다.
 
 아래는 Container 프로토콜을 따르는 generic이 아닌 버전의 IntStack 이다.
-```Swift
+```swift
 struct IntStack: Container {
     // original IntStack implementation
     var items = [Int]()

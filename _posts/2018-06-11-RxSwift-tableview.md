@@ -1,3 +1,10 @@
+---
+layout: post
+title:  "RxDataSource 예제를 보며 RxSwift 익히기"
+date:   2018-06-11 00:00:00 +0900
+categories: swift
+---
+
 ## RxSwift 개념잡기
 
 * 목표: table view form library를 rx스럽게 작성하기

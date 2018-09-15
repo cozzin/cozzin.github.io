@@ -1,4 +1,9 @@
-## estimated height가 작을 때 table view가 튀어오르는 현상
+---
+layout: post
+title:  "estimated height가 작을 때 table view가 튀어오르는 현상"
+date:   2018-06-19 00:00:00 +0900
+categories: swift
+---
 
 table view에서 estimated height가 row height 보다 작은 경우 `reloadData()` 할 때 스크롤이 튀어오르는 문제가 있다.
 scroll offset을 기억해서 조정하는 방법도 있는 듯하지만 근본적인 문제를 해결하는 방법이 아닌것 같아서 다른 방법을 한동안 찾아봤다.

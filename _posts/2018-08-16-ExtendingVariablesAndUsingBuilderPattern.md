@@ -1,3 +1,10 @@
+---
+layout: post
+title:  "Builder 패턴 사용하기"
+date:   2018-08-16 00:00:00 +0900
+categories: swift
+---
+
 ## JSONWebToken.swift를 통해서 본 variable 확장하기, builder 패턴 사용하기
 
 `JSONWebToken.swift` readme 파일을 한번 살펴보다가 흥미로운 코드를 발견했다.

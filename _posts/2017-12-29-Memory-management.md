@@ -1,4 +1,9 @@
-메모리 관리 - Objc부터 Swift까지
+---
+layout: post
+title:  "iOS 메모리 관리"
+date:   2017-12-29 00:00:00 +0900
+categories: swift
+---
 
 ## 1. 레퍼런스 카운트
 ### 기본 개념

@@ -1,5 +1,9 @@
-## CocoaPods 꿀팁
-
+---
+layout: post
+title:  "CocoaPods 꿀팁"
+date:   2018-08-30 00:00:00 +0900
+categories: cocoapods
+---
 ### CocoaPods warning 제거하기 ⚠️
 #### 1. inhibit_warnings 옵션 적용하기
 iOS 프로젝트에 오픈소스를 간편하게 가져올 수 있도록 도와주는 cocoapods를 사용하다 보면 warning이 많이 발생하는 것을 볼 수 있다.
