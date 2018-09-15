@@ -29,8 +29,8 @@ plugins:
   - jekyll-feed
 
 search: true
-# disqus:
-#     shortname: cozzin
+disqus:
+    shortname: cozzin
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
