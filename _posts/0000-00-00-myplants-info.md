@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "MyPlants 개인정보 처리문서"
-date:   2018-06-19 00:00:00 +0900
-categories: swift
+date:   0000-00-00 00:00:00 +0900
+categories: MyPlants
 ---
 
 단순히 MyPlants 개인정보 처리에 대한 정보 명시를 위한 포스팅입니다.

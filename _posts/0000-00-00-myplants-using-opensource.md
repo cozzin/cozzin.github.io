@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "myplants에서 사용하는 오픈소스"
-date:   2018-06-19 00:00:00 +0900
-categories: iOS, MyPlants
+date:   0000-00-00 00:00:00 +0900
+categories: MyPlants
 ---
 
 단순히 오픈소스 라이선스 정리를 위한 포스팅입니다
