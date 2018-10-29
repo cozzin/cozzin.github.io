@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "RxDataSource 예제를 보며 RxSwift 익히기"
-date:   2018-06-11 00:00:00 +0900
+date:   2018-06-11 00:00:00 +0000
 categories: swift
 ---
 

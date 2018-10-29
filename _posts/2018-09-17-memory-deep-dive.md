@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Memory Deep Dive"
-date:   2018-09-17 00:00:00 +0900
+date:   2018-09-17 00:00:00 +0000
 categories: jekyll
 ---
 

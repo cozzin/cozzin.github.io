@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "estimated height가 작을 때 table view가 튀어오르는 현상"
-date:   2018-06-19 00:00:00 +0900
+date:   2018-06-19 00:00:00 +0000
 categories: swift
 ---
 

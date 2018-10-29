@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Builder 패턴 사용하기"
-date:   2018-08-16 00:00:00 +0900
+date:   2018-08-16 00:00:00 +0000
 categories: swift
 ---
 

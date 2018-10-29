@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "iOS 메모리 관리"
-date:   2017-12-29 00:00:00 +0900
+date:   2017-12-29 00:00:00 +0000
 categories: swift
 ---
 

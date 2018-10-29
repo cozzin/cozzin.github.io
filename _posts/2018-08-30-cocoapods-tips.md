@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "CocoaPods 꿀팁"
-date:   2018-08-30 00:00:00 +0900
+date:   2018-08-30 00:00:00 +0000
 categories: cocoapods
 ---
 ### CocoaPods warning 제거하기 ⚠️
