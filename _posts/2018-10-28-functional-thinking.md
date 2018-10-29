@@ -5,7 +5,7 @@ date:   2018-10-28 00:00:00 +0900
 categories: swift
 ---
 
-![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwoa7dxq2fj30dw0i8myr.jpg)
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwotd10jxaj304605hmxc.jpg)
 
 사실 함수형 사고 보다 RxSwift를 먼저 접하긴 했지만, 먼저 뿌리가 되는 함수형 프로그래밍 부터 알아보고 싶다는 생각이 들었다. RxSwift가 매력적인 프로그래밍 도구가 되어주는 것은 이해했지만, 아직도 남들을 설득하기에 기초가 되는 지식이 부족했기 때문이다.
 
@@ -13,7 +13,7 @@ categories: swift
 
 미리 말해두고 싶은 것은 객체지향과 함수형은 서로 적대적인 관계가 아니라는 점이다. 코드의 재사용이라는 동일한 목표를 두고 다른 각도에서 바라보는 것이다. 저자가 책의 마지막 부분에서 말하고 있듯이, 다양한 패러다임을 연습해두고 문제에 맞는 방식을 채택하는 것이 좋다.
 
-개발자들은 코드를 재사용하고 싶어한다. 클래스를 재사용하는 것에 초점을 맞춘 **객체지향 프로그래밍**이 있고, 함수를 재사용하는 것에 초점을 맞춘 **함수형 프로그래밍**이 있다. 함수를 재사용하기 위해서는 함수를 사용할 때마다 다른 결과가 나와서는 안되겠다. 함수형 프로그래밍에서 **불변성**을 중요하게 생각하는 이유다.
+개발자들은 코드를 재사용하고 싶어한다. 클래스를 재사용하는 것에 초점을 맞춘 [객체지향 프로그래밍](https://ko.wikipedia.org/wiki/%EA%B0%9D%EC%B2%B4_%EC%A7%80%ED%96%A5_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D)이 있고, 함수를 재사용하는 것에 초점을 맞춘 [함수형 프로그래밍](https://ko.wikipedia.org/wiki/%ED%95%A8%EC%88%98%ED%98%95_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D)이 있다. 함수를 재사용하기 위해서는 함수를 사용할 때마다 다른 결과가 나와서는 안되겠다. 함수형 프로그래밍에서 **불변성**을 중요하게 생각하는 이유다.
 
 ### 커링
 
@@ -43,7 +43,7 @@ func add(_ x: Int) -> (Int) -> Int {
 }
 ```
 
-이렇게 x를 먼저 받아두고 y는 나중에 받을 수 있도록 해주는 함수다. 커링(currying)이라고 부른다. 1, 2, 3, 4, 5 를 더해주는 함수는 이렇게 만든다.
+이렇게 x를 먼저 받아두고 y는 나중에 받을 수 있도록 해주는 함수다. **커링(currying)**이라고 부른다. 1, 2, 3, 4, 5 를 더해주는 함수는 이렇게 만든다.
 
 ```swift
 let addOne = add(1)
@@ -63,7 +63,7 @@ addFour(10) // 14
 addFive(10) // 15
 ```
 
-커링의 개념을 조금 더 깊게 알고 싶다면 [이 글](https://edykim.com/ko/post/writing-a-curling-currying-function-in-javascript/)을 참고하는 것도 도움이 될 것이다.
+저자는 부분함수와 커링의 개념을 좀 더 명확하게 구분하고자 했다. 간단히 보면 파라미터가 1개인 함수로 만들어주는 것을 커링, 나머지는 부분함수라고 이해했다. 커링의 개념을 조금 더 깊게 알고 싶다면 [이 글](https://edykim.com/ko/post/writing-a-curling-currying-function-in-javascript/)을 참고하는 것도 도움이 될 것이다. Swift로 라이브러리 형태로 정리된 것은 [thoughtbot/Curry](https://github.com/thoughtbot/Curry)가 있으니 사용해보는 것도 좋겠다.
 
 
 ### 함수형 자료구조
@@ -93,6 +93,9 @@ public enum Result<Value, Error: Swift.Error>: ResultProtocol, CustomStringConve
     case failure(Error)
 }
 ```
+
+### Lazy
+오류를 발생시키지 않는 함수형 자료구조를 쓰면 Lazy를 구현하는데 도움이 된다.
 
 ### 함수 수준의 재사용
 
