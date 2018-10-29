@@ -28,10 +28,17 @@ remote_theme: "mmistakes/jekyll-theme-basically-basic"
 plugins:
   - jekyll-feed
 
-search: true
 disqus:
     shortname: cozzin
 google_analytics: UA-125862477-1
+
+search: true
+search_provider: algolia
+algolia:
+  application_id: Z6EJVL1FYB
+  index_name: pages
+  search_only_api_key: cc8119308e6118b531143f18bd2b17a7
+  powered_by: true # true (default), false
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
