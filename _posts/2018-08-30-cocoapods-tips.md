@@ -4,6 +4,39 @@ title:  "CocoaPods 꿀팁"
 date:   2018-08-30 00:00:00 +0900
 categories: cocoapods
 ---
+### 특정 주소의 pod을 타겟으로 바라보기
+[http://guides.cocoapods.org/using/the-podfile.html#from-a-podspec-in-the-root-of-a-library-repo
+](http://guides.cocoapods.org/using/the-podfile.html#from-a-podspec-in-the-root-of-a-library-repo
+)
+```
+To use the master branch of the repo:
+pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git'
+
+To use a different branch of the repo:
+pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git', :branch => 'dev'
+
+To use a tag of the repo:
+pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git', :tag => '3.1.1'
+
+Or specify a commit:
+pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git', :commit => '0f506b1c45'
+```
+
+### pod이 업데이트 되었는지 확인하기
+
+```
+pod outdated
+
+```
+
+입력하면 아래와 같이 버전 정보가 비교되어 나온다. latest version을 보고 필요한 경우 업데이트 해주면 된다.
+
+```
+The following pod updates are available:
+- AFNetworking 2.6.3 -> 2.6.3 (latest version 3.2.1)
+- SnapKit 4.0.1 -> 4.0.1 (latest version 4.2.0)
+```
+
 ### CocoaPods warning 제거하기 ⚠️
 #### 1. inhibit_warnings 옵션 적용하기
 iOS 프로젝트에 오픈소스를 간편하게 가져올 수 있도록 도와주는 cocoapods를 사용하다 보면 warning이 많이 발생하는 것을 볼 수 있다.
