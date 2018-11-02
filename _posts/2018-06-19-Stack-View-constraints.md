@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Stack View subview hidden시 constraints 문제"
-date:   2018-06-19 00:00:00 +0900
+date:   2018-06-19 00:00:00 +0000
 categories: swift
 ---
 

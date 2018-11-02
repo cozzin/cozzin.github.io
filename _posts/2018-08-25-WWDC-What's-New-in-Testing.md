@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "What's New in Testing"
-date:   2018-08-25 00:00:00 +0900
+date:   2018-08-25 00:00:00 +0000
 categories: swift
 ---
 

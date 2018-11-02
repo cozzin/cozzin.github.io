@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "CocoaPods 꿀팁"
-date:   2018-08-30 00:00:00 +0900
+date:   2018-08-30 00:00:00 +0000
 categories: cocoapods
 ---
 ### 특정 주소의 pod을 타겟으로 바라보기
