@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "swift dynamic"
-date:   2017-12-26 00:00:00 +0000
+date: 2017-12-26 00:00:00 +0000
 categories: swift
 ---
 

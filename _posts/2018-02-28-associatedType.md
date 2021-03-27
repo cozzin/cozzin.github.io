@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Associated Types"
-date:   2018-02-28 00:00:00 +0000
+title: "Associated Types"
+date: 2018-02-28 00:00:00 +0000
 categories: swift
 ---
 ## 요약
