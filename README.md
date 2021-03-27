@@ -1,5 +1,9 @@
 # cozzin.github.io
 기술 블로그
+흩어져 있는 자료 한 곳에 모으는 중...
+
+* https://medium.com/@hongseongho
+* https://cozzin.tistory.com/
 
 ### Local Build
 ```bash
@@ -13,6 +17,8 @@ bundle update
 ```bash
 bundle exec jekyll serve
 ```
+
+http://127.0.0.1:4000
 
 ### Analytics
 https://analytics.google.com/analytics/web/#/report-home/a125862477w184483642p181831336
