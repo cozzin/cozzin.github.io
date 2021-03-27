@@ -13,14 +13,13 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: cozzin's blog
+title: cozzin's dev blog
 email: hsh3592@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   코찐의 블로그 입니다. iOS 개발을 주로 하고 있고, 시인을 위한 플랫폼인 시음을 개발하고 있습니다.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://cozzin.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: cozzin
-
 
 # Build settings
 markdown: kramdown
@@ -29,7 +28,7 @@ plugins:
   - jekyll-feed
 
 disqus:
-    shortname: cozzin
+  shortname: cozzin
 google_analytics: UA-125862477-1
 
 search: true
@@ -38,7 +37,7 @@ algolia:
   application_id: Z6EJVL1FYB
   index_name: pages
   search_only_api_key: cc8119308e6118b531143f18bd2b17a7
-  powered_by: true # true (default), false
+  powered_by: false
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
@@ -51,5 +50,3 @@ algolia:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
-
-theme: jekyll-theme-cayman
