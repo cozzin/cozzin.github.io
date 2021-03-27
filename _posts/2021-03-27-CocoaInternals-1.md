@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Cocoa Internals: 1장 객체 (1.1 ~ 1.2)"
-date: 2021-01-03 22:35:00 +0900
+date: 2021-03-27 22:35:00 +0900
 categories: CocoaInternals
 tags:
   - swift
