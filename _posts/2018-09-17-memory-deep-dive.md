@@ -2,7 +2,7 @@
 layout: post
 title:  "Memory Deep Dive"
 date:   2018-09-17 00:00:00 +0000
-categories: jekyll
+categories: CS
 ---
 
 * memory graph
@@ -27,4 +27,3 @@ categories: jekyll
     * viewDidDisapper / viewWillAppear 때 이미지를 unload 하고 load 하는 방법
   * ImageIO
     * downsampling image 를 위해 사용
-

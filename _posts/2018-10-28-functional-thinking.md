@@ -2,10 +2,11 @@
 layout: post
 title:  "Functional Thinking"
 date:   2018-10-28 00:00:00 +0000
-categories: swift
+categories: Swift
+tags:
+  - Swift
+  - Functional programming
 ---
-
-![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwotd10jxaj304605hmxc.jpg)
 
 사실 함수형 사고 보다 RxSwift를 먼저 접하긴 했지만, 먼저 뿌리가 되는 함수형 프로그래밍 부터 알아보고 싶다는 생각이 들었다. RxSwift가 매력적인 프로그래밍 도구가 되어주는 것은 이해했지만, 아직도 남들을 설득하기에 기초가 되는 지식이 부족했기 때문이다.
 
@@ -69,22 +70,22 @@ addFive(10) // 15
 ### 메모이제이션
 내부의 상태를 저장하기 위해서 캐시를 사용하는 경우가 많다. 그 경우에 클래스 내부에서 캐싱을 한다. 이 경우 어디서 캐시를 사용하는지 고려해줘야 한다. 클래스 내부의 어떤 함수가 사용할 수도 있고 아닐 수도 있다. 잠재적인 오류를 품고 있는 것이다.
 
-함수형 프로그래밍에서는 캐시를 함수 단위로 풀어가고자 한다. 함수의 리턴 값을 캐싱하는 방법인데 **메모이제이션**이라고 부른다. 메모이제이션을 사용하면 런타임에 최적화를 맡기게 되어서 성능 향상을 꾀할 수 있다. 그리고 메모이제이션 된 함수의 내부의 값을 다른 함수가 변경하는 것이 어렵기 때문에 잠재적인 오류를 줄일 수 있다. 
+함수형 프로그래밍에서는 캐시를 함수 단위로 풀어가고자 한다. 함수의 리턴 값을 캐싱하는 방법인데 **메모이제이션**이라고 부른다. 메모이제이션을 사용하면 런타임에 최적화를 맡기게 되어서 성능 향상을 꾀할 수 있다. 그리고 메모이제이션 된 함수의 내부의 값을 다른 함수가 변경하는 것이 어렵기 때문에 잠재적인 오류를 줄일 수 있다.
 
 ```swift
 func memoize<T: Hashable, U>(_ function: @escaping (T) -> U) -> (T) -> U {
     var cache = [T: U]()
-    
+
     func memoizedFunction(x: T) -> U {
         if let cachedValue = cache[x] {
             return cachedValue
         }
-        
+
         let value = function(x)
         cache[x] = value
         return value
     }
-    
+
     return memoizedFunction
 }
 
@@ -180,13 +181,13 @@ lazy map을 사용해서 map을 연산할 필요가 있을 때만 연산한다. 
 ```swift
 protocol Customer {
     associatedtype Item
-    
+
     var plan: [Item] { get }
-    
+
     func checkCredit()
     func checkInventory()
     func ship()
-    
+
     func process()
 }
 
@@ -210,7 +211,7 @@ protocol CustomerBlocks {
     var checkCredit: (() -> Void)? { get }
     var checkInventory: (() -> Void)? { get }
     var ship: (() -> Void)? { get }
-    
+
     func process()
 }
 
@@ -256,7 +257,7 @@ class CalcAdd: Calc {
 ```swift
 class StrategyTest {
     var listOfStrategies: [Calc] = [CalcMult(), CalcAdd()]
-    
+
     func test() {
         listOfStrategies.forEach {
             print(10 == $0.product(n: 5, m: 2))
@@ -280,7 +281,7 @@ class StrategyTest {
             return result
             }
         ]
-        
+
         listOfExp.forEach {
             print(10 == $0(5, 2))
         }
@@ -296,12 +297,12 @@ class StrategyTest {
 class CompFactory {
     var types: [String: Computer] = [:]
     static let sharedInstance: CompFactory = CompFactory()
-    
+
     init() {
         types["MacBookPro6_2"] = Laptop()
         types["SunTower"] = Desktop()
     }
-    
+
     func ofType(_ computer: String) -> Computer? {
         return types[computer]
     }
@@ -310,7 +311,7 @@ class CompFactory {
 func testCompFactory() {
     let bob = AssignedComputer(computerType: CompFactory.sharedInstance.ofType("MacBookPro6_2"), userID: "Bob")
     let steve = AssignedComputer(computerType: CompFactory.sharedInstance.ofType("MacBookPro6_2"), userID: "Bob")
-    
+
     print(bob.computerType === steve.computerType)
 }
 ```
@@ -324,18 +325,18 @@ func testMemoize() {
                                       "SunTower": Desktop()]
         return of[type]
     }
-    
+
     let computerOfType = memoize(computerOf)
-    
+
     let bob = AssignedComputer(computerType: computerOfType("MacBookPro6_2"), userID: "Bob")
     let steve = AssignedComputer(computerType: computerOfType("MacBookPro6_2"), userID: "Bob")
-    
+
     print(bob.computerType === steve.computerType)
 }
 ```
 
 #### 4. 팩토리와 커링
-주어진 조건에 따라 다른 값을 리턴하는 것이 **팩토리** 의 본질이다. 이 글의 제일 앞부분에서 다뤘던 커링을 떠올려보자. 함수를 주어진 조건에 따라 다른 함수로 만든다. 
+주어진 조건에 따라 다른 값을 리턴하는 것이 **팩토리** 의 본질이다. 이 글의 제일 앞부분에서 다뤘던 커링을 떠올려보자. 함수를 주어진 조건에 따라 다른 함수로 만든다.
 
 ```swift
 let addOne = add(1)
@@ -351,7 +352,7 @@ let addFive = add(5)
 
 ```swift
 extension Reactive where Base: UILabel {
-    
+
     /// Bindable sink for `text` property.
     public var text: Binder<String?> {
         return Binder(self.base) { label, text in
@@ -365,7 +366,7 @@ extension Reactive where Base: UILabel {
             label.attributedText = text
         }
     }
-    
+
 }
 ```
 
@@ -378,6 +379,5 @@ extension Reactive where Base: UILabel {
 * swift를 사용하면서 이미 많은 개념들을 함수형으로 사용하고 있다는 것을 알게되었다.
 * 함수형에도 패턴이 있다는 것을 알게 되었다.
 * 스트림을 무한한 컬렉션이라고 상상해보면 더 이해가 쉽다는 것을 알게되었다.
-* 함수형으로 코드를 작성하는 것은 쉽지 않다. 
+* 함수형으로 코드를 작성하는 것은 쉽지 않다.
 * 하지만 제대로 사용하면 더 간결하고 안전한 코드를 얻을 수 있다는 것을 알게되었다.
-
