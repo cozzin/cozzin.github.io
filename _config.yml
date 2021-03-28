@@ -14,16 +14,16 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: cozzin's dev blog
-email: hsh3592@gmail.com
+# email: hsh3592@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  코찐의 블로그 입니다. iOS 개발을 주로 하고 있고, 시인을 위한 플랫폼인 시음을 개발하고 있습니다.
+  안녕하세요 iOS 앱 개발자 홍성호 입니다.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://cozzin.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: cozzin
 
 # Build settings
 markdown: kramdown
-remote_theme: "mmistakes/jekyll-theme-basically-basic"
+# remote_theme: "mmistakes/jekyll-theme-basically-basic"
 plugins:
   - jekyll-feed
 
@@ -50,3 +50,7 @@ algolia:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+theme: minima
+minima:
+  skin: dark
