@@ -320,7 +320,7 @@ subscirber가 얼마나 value를 더 받을 수 있는지 알려줌.
 
 [https://developer.apple.com/documentation/combine/subscribers/demand](https://developer.apple.com/documentation/combine/subscribers/demand)
 
-[##_Image|kage@cQBIf1/btqSDt41EAu/jZ2itzkofrSfFNq283liK0/img.png|alignCenter|data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent"|||_##]
+![다운로드 (1)](/assets/다운로드%20(1).png)
 
 .max(Int)로 들어온 값 만큼 + 해줌.
 
