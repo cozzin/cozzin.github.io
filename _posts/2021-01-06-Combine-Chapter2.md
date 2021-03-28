@@ -242,6 +242,8 @@ class MyObject {
 
 ## Understanding what's going on
 
+![다운로드](/assets/다운로드.png)
+
 1\. 구독 시작
 
 2\. Subscription 객체 전달
