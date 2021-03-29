@@ -29,7 +29,9 @@ theme: minima
 # remote_theme: "mmistakes/jekyll-theme-basically-basic"
 plugins:
   - jekyll-feed
-
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  
 disqus:
   shortname: cozzin
 
