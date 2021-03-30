@@ -6,8 +6,10 @@ date: 2021-03-30 12:25:00 +0900
 
 iOS 앱 개발하면서 `NotificationCenter`를 많이 사용하게 되는데요. 특정 객체의 행동을 추척할 때 유용하게 쓸 수 있습니다. `addObserver(_:selector:name:object:)`를 사용해서 옵저버를 등록해 둔 경우에는, 해당 객체가 메모리에서 해제될 때 옵저버도 자동으로 함께 삭제됩니다. `removeObserver(_:)`를 호출할 필요가 없는 것이죠.
 
+## 이슈
 여기에 예외가 있습니다. `addObserver(forName:object:queue:using:)`를 사용하는 경우에는 직접 `removeObserver(_:)`를 호출해줘야 합니다. 클로저를 넘겨주기 때문에 OS 내부에서 해당 클로저를 강한 참조했을 것으로 추측됩니다. [[removeObserver 문서](https://developer.apple.com/documentation/foundation/notificationcenter/1413994-removeobserver)] 그렇다면 개발자가 실수할 가능성이 있습니다. deinit 때에 `removeObserver(_:)`를 호출해주지 않을 수도 있죠.
 
+## 개선
 이런 동작을 관리해주는 객체를 만들면 어떨까요? 저희 회사 팀에서는 `addObserver(_:selector:name:object:)`의 결과값을 래핑해서 관리해주는 객체를 이미 사용하고 있습니다. 하지만 여전히 `removeObserver(_:)`를 호출해줘야 합니다ㅜ 해당 객체를 감시하고 있다가 필요시 자동으로 `removeObserver(_:)`를 호출해주는 코드를 만들어보겠습니다.
 
 [https://stackoverflow.com/questions/28670796/can-i-hook-when-a-weakly-referenced-object-of-arbitrary-type-is-freed](https://stackoverflow.com/questions/28670796/can-i-hook-when-a-weakly-referenced-object-of-arbitrary-type-is-freed) 스택 오버플로우 내용을 먼저 참고해보겠습니다. `AssociatedObject`를 특정 객체에 정의를 해주면 해당 객체가 메모리에서 해제될 때 `AssociatedObject`도 함께 해제되는 원리를 이용했습니다.
@@ -44,4 +46,5 @@ private func describing(_ objRef: AnyObject) -> String {
 3. `objc_setAssociatedObject`를 통해서 객체에 동적으로 프로퍼티를 등록해줍니다.
 4. 객체가 메모리에서 해제되면 `DeallocWatcher`의 deinit이 호출됩니다. 그러면 등록된 클로저도 호출됩니다. 클로저가 호출되었을 때 해당 key 값으로 `removeObserver`를 해줍니다.
 
+## 결론
 이런식으로 하면 객체를 상속받거나 수정하지 않고도 객체 외부에서 메모리 해제를 감지할 수 있습니다. 비슷한 원리를 사용해서 다른 곳에서도 활용할 수 있을 것 같습니다. 예제가 조금 어려웠네요ㅎ;; 조금 더 좋은 예제가 있으면 나중에 한번 더 글을 써보려 합니다. 도움이 되었으면 좋겠습니다 🙏🙏
