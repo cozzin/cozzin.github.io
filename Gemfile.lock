@@ -279,7 +279,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  github-pages
+  github-pages (~> 213)
   jekyll-algolia
   jekyll-feed (~> 0.6)
   jekyll-paginate
