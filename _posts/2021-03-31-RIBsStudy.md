@@ -51,7 +51,7 @@ date: 2021-03-31 23:38:00 +0900
 - 프로토콜이 굉장히 많이 사용되는데... 아직 익숙하지 않아서 그런지 헷갈리네요;;
 
 ### Interactor
-```Swift
+```swift
 import RIBs
 import RxSwift // Rx는 필수일까?
 
@@ -99,7 +99,7 @@ final class LoggedInInteractor: PresentableInteractor<LoggedInPresentable>, Logg
 
 ### Router
 
-```Swift
+```swift
 import RIBs
 
 protocol LoggedInInteractable: Interactable {
@@ -122,7 +122,7 @@ final class LoggedInRouter: ViewableRouter<LoggedInInteractable, LoggedInViewCon
 
 ### View
 
-```Swift
+```swift
 import RIBs
 import RxSwift
 import UIKit
@@ -152,7 +152,7 @@ final class LoggedInViewController: UIViewController, LoggedInPresentable, Logge
 
 해당 RIB에서 필요한 속성을 [Dependency](https://github.com/uber/RIBs/blob/master/ios/RIBs/Classes/DI/Dependency.swift)에 정의
 
-```Swift
+```swift
 import RIBs
 
 // 해당 RIB은 여기에 있는 정보를 사용할 수 있음
