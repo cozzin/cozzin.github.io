@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Let'Swift 발표들로 RIBs 맛보기"
+title: "RIBs 스터디 1: Let'Swift 발표들로 RIBs 맛보기"
 date: 2021-03-31 23:38:00 +0900
 ---
 
