@@ -51,4 +51,4 @@ public extension Buildable where Self: AnyObject {
 extension NSObject: Buildable {}
 ```
 
-기발하다고 생각했던 점은 `subscript`의 return 값으로 `((Value) -> Builder<Base>)` 클로저 자체를 넘겼다는 점 입니다. 클로저를 return 할 수 있다는 것은 특별한 일이 아니지만, 
+기발하다고 생각했던 점은 `subscript`의 return 값으로 `((Value) -> Builder<Base>)` 클로저 자체를 넘겼다는 점 입니다. 클로저를 return 할 수 있다는 것은 특별한 일이 아니지만, 클로저를 받은 쪽에서 함수로 사용할 수 있어서 결론적으로 `text("hi")`와 같이 바로 실행할 수 있다는 것이 재밌다고 생각됩니다. 사용하는 쪽에서는 함수인지 클로저인지 고민할 필요없이 빌더의 set 함수라고 생각하고 작성할 수 있습니다. 잘 기억해뒀다가 나중에 응용하면 유용한 코드를 작성할 수 있을 것 같습니다.
