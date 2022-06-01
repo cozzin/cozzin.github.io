@@ -2,7 +2,7 @@
 layout: post
 title:  "TIL: Xcode Archive 오류"
 date: 2020-11-29 00:00:00 +0000
-categories: Swift
+categories: Xcode
 ---
 
 별 것 아니지만, 나중을 위해 기록해둔다.
