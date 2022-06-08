@@ -11,18 +11,18 @@ on:
 jobs:
   continuous-delivery:
 
-    runs-on: ubuntu-latest
-
+    runs-on: macos-latest
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0  # for posts's lastmod
-              
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: 3.1.0
           bundler-cache: true
 
       - name: Deploy
