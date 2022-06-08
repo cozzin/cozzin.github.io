@@ -8,7 +8,7 @@
 
 set -eu
 
-PAGES_BRANCH="master"
+PAGES_BRANCH="main"
 
 SITE_DIR="_site"
 
