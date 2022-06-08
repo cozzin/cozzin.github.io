@@ -19,9 +19,9 @@
          with:
            fetch-depth: 0  # for posts's lastmod
            submodules: recursive
-        - name: Set up Ruby
-          uses: ruby/setup-ruby@359bebbc29cbe6c87da6bc9ea3bc930432750108
-          with:
-            ruby-version: '3.1'
+       - name: Set up Ruby
+         uses: ruby/setup-ruby@359bebbc29cbe6c87da6bc9ea3bc930432750108
+         with:
+           ruby-version: '3.1'
        - name: Deploy
          run: bash tools/deploy.sh
