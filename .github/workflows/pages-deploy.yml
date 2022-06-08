@@ -15,7 +15,7 @@
 
      steps:
        - name: Checkout
-         uses: actions/checkout@v2
+         uses: actions/checkout@v3
          with:
            fetch-depth: 0  # for posts's lastmod
            submodules: recursive
@@ -23,7 +23,7 @@
        - name: Setup Ruby
          uses: ruby/setup-ruby@v1
          with:
-           ruby-version: 3.0
+           ruby-version: '3.0'
            bundler-cache: true
 
        - name: Deploy
