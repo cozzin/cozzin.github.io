@@ -11,18 +11,21 @@ on:
 jobs:
   continuous-delivery:
 
-    runs-on: macos-latest
-    
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0  # for posts's lastmod
-
+          
+      - name: Checkout submodules
+        uses: textbook/git-checkout-submodule-action@master
+        
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1.0
+          ruby-version: 2.7
           bundler-cache: true
 
       - name: Deploy
