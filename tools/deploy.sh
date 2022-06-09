@@ -75,10 +75,11 @@ resume_site_dir() {
 setup_gh() {
   if [[ -z $(git branch -av | grep "$PAGES_BRANCH") ]]; then
     _no_pages_branch=true
-    git reset --hard
-    git pull "$PAGES_BRANCH"
+    git checkout -b "$PAGES_BRANCH"
   else
+    git stash
     git checkout "$PAGES_BRANCH"
+    git stash pop
   fi
 }
 
