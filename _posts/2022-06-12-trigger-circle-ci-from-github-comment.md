@@ -3,6 +3,11 @@ layout: post
 title:  "Github Comment로 CircleCI 실행시키기"
 date: 2022-06-12 10:47:00 +0900
 categories: CI
+tags:
+  - Github
+  - Github Action
+  - CircleCI
+  - Deployment Automation
 ---
 
 안녕하세요! 요즘에는 Sendbird Chat 배포 자동화를 수정하고 있습니다.
@@ -56,13 +61,13 @@ when:
 이렇게 `config.yml` 파일을 수정해놓고 CircleCI에 `작업 프로젝트 > 작업 브랜치`로 들어가보면 
 `Trigger Pipline` 이라는 버튼을 볼 수 있습니다. 
 
-![](../assets/images/2022-06-09-22-50-20.png)
+![](/assets/images/2022-06-09-22-50-20.png)
 
 Trigger Pipline을 누르면 어떤 파라미터를 넣어서 Pipeline을 시작할지 설정할 수 있습니다.
 하지만 `run_workflow_build_and_release` 대략 이런식으로 생긴 파라미터를 직접 넣어야하는
 상당한 불편함이 있습니다...
 
-![](../assets/images/2022-06-09-22-56-46.png)
+![](/assets/images/2022-06-09-22-56-46.png)
 
 ## CircleCI API 통해서 Workflow 실행시키기
 
@@ -94,7 +99,7 @@ curl --request POST \
 }
 ```
 
-<img src="../assets/images/2022-06-09-23-28-43.png" width=500>
+![](/assets/images/2022-06-09-23-28-43.png)
 
 ## CircleCI API를 Github Comment로 작동시키기
 
@@ -213,13 +218,13 @@ Deploy 단계 전에 아래의 step을 추가하면 됩니다!
 
 그러면 배포 하면 안되는 브랜치에서 코멘트 날린 경우에는 아래와 같이 걸러지게 됩니다. 당연히 `Deploy` step은 실행되지 않아서 실수로 배포되는 경우는 없습니다.
 
-<img src="../assets/images/2022-06-12-22-30-01.png" width=600>
+![](/assets/images/2022-06-12-22-30-01.png)
 
 ## 결론
 
 이제 PR에 코멘트를 입력해서 배포를 시작할 수 있습니다! 브랜치명을 입력할 필요 없고, 배포되어서 안되는 브랜치에서 배포될 일도 없습니다. 
 
-![](../assets/images/2022-06-12-22-33-50.png)
+![](/assets/images/2022-06-12-22-33-50.png)
 
 아래는 github action 전체 코드 입니다.
 
