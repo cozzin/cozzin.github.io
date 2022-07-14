@@ -1,6 +1,5 @@
 # cozzin.github.io
 기술 블로그
-흩어져 있는 자료 한 곳에 모으는 중...
 
 * https://medium.com/@hongseongho
 * https://cozzin.tistory.com/
