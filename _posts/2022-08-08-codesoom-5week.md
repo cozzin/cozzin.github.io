@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "[코드숨] 스프링 5주차 회고 - 유효성 검사"
-date: 2022-08-08 21:00:00 +0900
+date: 2022-08-08 19:00:00 +0900
 categories: Spring
 tags:
   - Spring
