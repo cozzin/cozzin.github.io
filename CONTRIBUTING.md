@@ -60,7 +60,7 @@ bundle install
 bundle exec jekyll serve
 
 # 테스트 실행
-bundle exec htmlproofer _site --disable-external --check-html --allow_hash_href
+bundle exec htmlproofer _site --disable-external --checks html --allow-hash-href
 ```
 
 ### 4. 커밋 및 푸시

@@ -98,7 +98,7 @@ bundle exec jekyll build
 
 ### HTML 검증
 ```bash
-bundle exec htmlproofer _site --disable-external --check-html --allow_hash_href
+bundle exec htmlproofer _site --disable-external --checks html --allow-hash-href
 ```
 
 ### 전체 빌드 및 테스트
@@ -107,7 +107,7 @@ bundle exec htmlproofer _site --disable-external --check-html --allow_hash_href
 JEKYLL_ENV=production bundle exec jekyll build
 
 # 테스트
-bundle exec htmlproofer _site --disable-external --check-html --allow_hash_href
+bundle exec htmlproofer _site --disable-external --checks html --allow-hash-href
 ```
 
 ## 검색 인덱스 업데이트
