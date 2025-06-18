@@ -8,6 +8,8 @@ tags:
   - App Store
   - 배포
   - App Store Connect
+lang: ko-KR
+translation_id: app-store-deployment-experience
 ---
 
 ## 들어가며

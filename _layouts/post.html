@@ -1,0 +1,25 @@
+---
+layout: default
+---
+
+{% if page.lang == "ko-KR" %}
+  {% assign en_post = site.posts | where: "lang", "en" | where: "translation_id", page.translation_id | first %}
+  {% if en_post %}
+    <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 20px; border-left: 4px solid #007bff;">
+      <strong>🌐 언어 선택:</strong> 
+      <a href="{{ en_post.url | relative_url }}" style="color: #007bff; text-decoration: none;">English</a> | 
+      <span style="color: #6c757d;">한국어 (현재)</span>
+    </div>
+  {% endif %}
+{% elsif page.lang == "en" %}
+  {% assign ko_post = site.posts | where: "lang", "ko-KR" | where: "translation_id", page.translation_id | first %}
+  {% if ko_post %}
+    <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 20px; border-left: 4px solid #007bff;">
+      <strong>🌐 Language:</strong> 
+      <span style="color: #6c757d;">English (current)</span> | 
+      <a href="{{ ko_post.url | relative_url }}" style="color: #007bff; text-decoration: none;">한국어</a>
+    </div>
+  {% endif %}
+{% endif %}
+
+{{ content }} 
