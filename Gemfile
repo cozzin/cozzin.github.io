@@ -3,8 +3,8 @@ source "https://rubygems.org"
 gem "jekyll", "~> 4.3"
 gem "jekyll-theme-chirpy", "~> 6.0"
 
-# Explicitly specify a more stable sass-embedded version for CI compatibility
-gem "sass-embedded", "~> 1.77.0"
+# Lock sass-embedded to a specific version that works well with Ruby 3.1.0 in CI
+gem "sass-embedded", "1.77.8"
 
 # Jekyll plugins
 group :jekyll_plugins do
