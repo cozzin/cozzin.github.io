@@ -124,6 +124,10 @@ assets:
 
 paginate: 10
 
+# Jekyll Feed settings
+feed:
+  path: feed.xml
+
 # ------------ The following options are not recommended to be modified ------------------
 
 kramdown:
@@ -174,6 +178,9 @@ defaults:
 
 sass:
   style: compressed
+  quiet_deps: true
+  load_paths:
+    - _sass
 
 compress_html:
   clippings: all
