@@ -1,28 +1,28 @@
- name: 'Automatic build'
- on:
-   push:
-     branches:
-       - main
-     paths-ignore:
-       - .gitignore
-       - README.md
-       - LICENSE
+name: 'Automatic build'
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - .gitignore
+      - README.md
+      - LICENSE
 
- jobs:
-   continuous-delivery:
+jobs:
+  continuous-delivery:
 
-     runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-     steps:
-       - name: Checkout
-         uses: actions/checkout@v3
-         with:
-           fetch-depth: 0  # for posts's lastmod
-           submodules: recursive
-       - name: Set up Ruby
-         uses: ruby/setup-ruby@359bebbc29cbe6c87da6bc9ea3bc930432750108
-         with:
-           ruby-version: '3.1.0'
-       - run: bundle install
-       - name: Deploy
-         run: bash tools/deploy.sh
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # for posts's lastmod
+          submodules: recursive
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@359bebbc29cbe6c87da6bc9ea3bc930432750108
+        with:
+          ruby-version: '3.1.6'
+      - run: bundle install
+      - name: Deploy
+        run: bash tools/deploy.sh
