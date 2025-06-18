@@ -146,7 +146,7 @@ jobs:
     steps:
       - name: Dump GitHub context
         env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
+          GITHUB_CONTEXT: {% raw %}${{ toJson(github) }}{% endraw %}
         run: echo "$GITHUB_CONTEXT"
 ```
 
