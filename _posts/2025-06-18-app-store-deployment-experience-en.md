@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Experiences of an App Store Deployment Manager - From Urgent Review to Scheduled Deployment"
+title: "Experiences of an App Store Deployment Manager - From Expedited Review to Scheduled Deployment"
 date: 2025-06-18 12:00:00 +0900
 categories: iOS
 tags:
@@ -18,7 +18,7 @@ I recently took on the role of App Store deployment manager. While I had mostly 
 
 This deployment was particularly special. We needed to deploy features after a specific date, with x.x.0 version pre-deployed and x.x.1 version to be deployed with updated screenshots and app descriptions.
 
-I wanted to start deployment on Sunday morning and submitted for review on Friday afternoon, so it wasn't a relaxed situation. That's why I requested an urgent review.
+I wanted to start deployment on Sunday morning and submitted for review on Friday afternoon, so it wasn't a relaxed situation. That's why I requested an expedited review.
 
 However, unexpected problems occurred continuously. The first submission was rejected due to screenshot regulation violations, I accidentally cancelled an approved build, and scheduled deployment didn't work properly.
 
@@ -53,15 +53,15 @@ Following a colleague's advice, I used the **strategy of preparing the next buil
 
 This method made rapid screenshot updates possible.
 
-## Urgent Review
+## Expedited Review
 
-After updating screenshots and app descriptions, I requested an urgent review. I had only seen others do it before, but this was my first time requesting it directly. It seems like in the past you could write a message explaining why urgent review was needed, but now that input field is gone.
+After updating screenshots and app descriptions, I requested an expedited review. I had only seen others do it before, but this was my first time requesting it directly. It seems like in the past you could write a message explaining why expedited review was needed, but now that input field is gone.
 
 Currently, on the [Apple Developer Contact](https://developer.apple.com/contact/) page, you just need to enter App Name and Platform in **App Review > Request Expedited App Review > App Review Inquiry > App Information**.
 
-Initially, the review was rejected due to regulation violations in screenshots and app descriptions, but when I resubmitted after fixing them, they were approved within 1-2 hours. I could directly feel the effect of urgent review.
+Initially, the review was rejected due to regulation violations in screenshots and app descriptions, but when I resubmitted after fixing them, they were approved within 1-2 hours. I could directly feel the effect of expedited review.
 
-I'm embarrassed to share this, but I accidentally cancelled an approved urgent review. The submission was cancelled due to a mistake while running an automation script... I was sweating and very surprised at the moment. Fortunately, when I resubmitted, it was approved within 1 hour.
+I'm embarrassed to share this, but I accidentally cancelled an approved expedited review. The submission was cancelled due to a mistake while running an automation script... I was sweating and very surprised at the moment. Fortunately, when I resubmitted, it was approved within 1 hour.
 
 ## Misunderstandings About Scheduled Deployment and Gradual Rollout
 
@@ -91,7 +91,7 @@ When cancelling a release, it's good to check if there were in-app events in the
 
 ### Apple Review Speed Improvement
 
-Even without urgent review, **it was possible to go from review registration to deployment within 24 hours**. I had heard that Apple's review speed had improved compared to before, and I could actually feel it.
+Even without expedited review, **it was possible to go from review registration to deployment within 24 hours**. I had heard that Apple's review speed had improved compared to before, and I could actually feel it.
 
 There could be various factors like app category, review complexity, etc., but overall the review speed seems to have improved.
 
@@ -102,7 +102,7 @@ It was an important deployment, so I was worried and felt a lot of pressure. Sti
 Key lessons learned:
 
 - **Screenshot Regulations**: Price information prohibited, different from app description regulations
-- **Urgent Review**: No message input field, separate request through Apple Developer Contact
+- **Expedited Review**: No message input field, separate request through Apple Developer Contact
 - **Screenshot Updates**: New version required, prepare build in advance strategy
 - **Special Character Restrictions**: Can be replaced with Unicode special characters
 - **Scheduled Deployment**: Unstable in this experience
