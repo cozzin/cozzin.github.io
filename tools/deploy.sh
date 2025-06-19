@@ -77,8 +77,11 @@ setup_gh() {
     _no_pages_branch=true
     git checkout -b "$PAGES_BRANCH"
   else
-    git stash
-    git stash drop
+    # Only stash if there are changes to stash
+    if ! git diff-index --quiet HEAD --; then
+      git stash
+      git stash drop
+    fi
     git checkout "$PAGES_BRANCH"
   fi
 }
