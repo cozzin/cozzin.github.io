@@ -1,0 +1,159 @@
+name: 'TTS Conversion'
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '_notes/**/*.md'
+  workflow_dispatch:
+
+jobs:
+  tts-conversion:
+    runs-on: ubuntu-22.04
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyttsx3 markdown gtts
+      
+      - name: Install espeak (for pyttsx3)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y espeak espeak-data libespeak1 libespeak-dev
+      
+      - name: Create audio directory
+        run: |
+          mkdir -p assets/audio
+      
+      - name: Convert markdown to audio
+        run: |
+          python << 'EOF'
+          import os
+          import re
+          import glob
+          from gtts import gTTS
+          from pathlib import Path
+          import hashlib
+          
+          def clean_markdown_for_tts(content):
+              """마크다운을 TTS에 적합하게 정리"""
+              # YAML front matter 제거
+              content = re.sub(r'^---\n.*?\n---\n', '', content, flags=re.DOTALL)
+              
+              # 마크다운 헤더 정리
+              content = re.sub(r'^#+\s*', '', content, flags=re.MULTILINE)
+              
+              # 마크다운 링크 정리 [텍스트](url) -> 텍스트
+              content = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', content)
+              
+              # 마크다운 볼드, 이탤릭 제거
+              content = re.sub(r'\*\*([^*]+)\*\*', r'\1', content)
+              content = re.sub(r'\*([^*]+)\*', r'\1', content)
+              
+              # 코드 블록 제거
+              content = re.sub(r'```[\s\S]*?```', '', content)
+              content = re.sub(r'`([^`]+)`', r'\1', content)
+              
+              # 리스트 마커 제거
+              content = re.sub(r'^[\s]*[-*+]\s*', '', content, flags=re.MULTILINE)
+              content = re.sub(r'^\s*\d+\.\s*', '', content, flags=re.MULTILINE)
+              
+              # 체크박스 제거
+              content = re.sub(r'- \[ \]', '', content)
+              content = re.sub(r'- \[x\]', '완료:', content)
+              
+              # 이모지 제거
+              emoji_pattern = re.compile(
+                  "["
+                  "\U0001F600-\U0001F64F"  # emoticons
+                  "\U0001F300-\U0001F5FF"  # symbols & pictographs
+                  "\U0001F680-\U0001F6FF"  # transport & map symbols
+                  "\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                  "]+", flags=re.UNICODE)
+              content = emoji_pattern.sub(' ', content)
+              
+              # 연속된 공백 제거
+              content = re.sub(r'\n\s*\n', '\n\n', content)
+              content = re.sub(r'\s+', ' ', content)
+              
+              return content.strip()
+          
+          def generate_audio_summary(content):
+              """노트의 요약 생성"""
+              sections = re.findall(r'^##\s+(.+?)$', content, re.MULTILINE)
+              if sections:
+                  summary = f"이 노트는 {len(sections)}개의 주요 섹션으로 구성되어 있습니다. "
+                  summary += "섹션들을 읽어드리겠습니다. "
+                  for i, section in enumerate(sections, 1):
+                      summary += f"{i}번째 섹션: {section}. "
+                  return summary
+              return ""
+          
+          def should_skip_file(file_path):
+              """TTS 변환을 건너뛸 파일인지 확인"""
+              skip_files = ['README.md', 'tts_script.py', 'requirements.txt']
+              return any(skip in file_path for skip in skip_files)
+          
+          # _notes 폴더의 모든 마크다운 파일 처리
+          notes_files = glob.glob('_notes/**/*.md', recursive=True)
+          
+          for md_file in notes_files:
+              if should_skip_file(md_file):
+                  print(f"건너뛰기: {md_file}")
+                  continue
+              
+              print(f"처리 중: {md_file}")
+              
+              try:
+                  with open(md_file, 'r', encoding='utf-8') as f:
+                      content = f.read()
+                  
+                  # 파일명에서 오디오 파일명 생성
+                  file_name = Path(md_file).stem
+                  audio_path = f"assets/audio/{file_name}"
+                  
+                  # 전체 내용 변환
+                  cleaned_content = clean_markdown_for_tts(content)
+                  if cleaned_content:
+                      # 텍스트가 너무 길면 요약만 생성
+                      if len(cleaned_content) > 5000:
+                          summary_content = generate_audio_summary(content)
+                          if summary_content:
+                              tts = gTTS(text=summary_content, lang='ko', slow=False)
+                              tts.save(f"{audio_path}_summary.mp3")
+                              print(f"요약 오디오 생성: {audio_path}_summary.mp3")
+                      else:
+                          tts = gTTS(text=cleaned_content, lang='ko', slow=False)
+                          tts.save(f"{audio_path}.mp3")
+                          print(f"오디오 생성: {audio_path}.mp3")
+                  
+              except Exception as e:
+                  print(f"오류 발생 {md_file}: {e}")
+          
+          print("TTS 변환 완료!")
+          EOF
+      
+      - name: Commit and push audio files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add assets/audio/
+          if git diff --staged --quiet; then
+            echo "변경사항이 없습니다."
+          else
+            git commit -m "🎧 Auto-generated audio files from markdown notes"
+            git push
+          fi
