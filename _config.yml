@@ -145,6 +145,12 @@ collections:
   tabs:
     output: true
     sort_by: order
+  # 옵시디언 노트용 컬렉션
+  notes:
+    output: true   # 공개됨
+    permalink: /notes/:title/
+    sort_by: date
+    sort_reverse: true
 
 defaults:
   - scope:
@@ -167,6 +173,15 @@ defaults:
     values:
       layout: page
       permalink: /:title/
+  # 옵시디언 노트 기본 설정
+  - scope:
+      path: _notes
+      type: notes
+    values:
+      layout: post
+      comments: false
+      toc: true
+      category: notes
   - scope:
       path: assets/img/favicons
     values:

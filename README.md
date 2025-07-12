@@ -27,6 +27,15 @@ http://127.0.0.1:4000
 bundle update
 ```
 
+### 옵시디언 섹션 공개/비공개 전환
+```bash
+# 공개로 설정
+./tools/toggle-obsidian-public.sh public
+
+# 비공개로 설정
+./tools/toggle-obsidian-public.sh private
+```
+
 ## 📊 분석 도구
 
 ### Google Analytics
@@ -50,6 +59,7 @@ ALGOLIA_API_KEY=your_admin_api_key bundle exec jekyll algolia
 
 ## 📝 주요 카테고리
 
+### 블로그 포스트 (`_posts/`)
 - **Swift/iOS**: Swift 언어, iOS 개발, 메모리 관리
 - **RxSwift/Combine**: 반응형 프로그래밍
 - **RIBs**: Uber의 아키텍처 패턴
@@ -57,6 +67,20 @@ ALGOLIA_API_KEY=your_admin_api_key bundle exec jekyll algolia
 - **AWS**: 클라우드 인프라
 - **Testing**: 테스트 관련 내용
 - **Refactoring**: 리팩토링 스터디
+
+### 학습 노트 (`_learning/`)
+- 개인 학습 자료 (공개)
+- 실습 내용과 예제 코드
+- 학습 목표와 결과 정리
+
+### 옵시디언 자료 (`_obsidian/`)
+- 원본 옵시디언 노트 (기본 비공개)
+- 일일 노트, 프로젝트 노트, 템플릿
+- 필요시 공개 전환 가능
+
+### 일반 노트 (`_notes/`)
+- 프로젝트 아이디어, 회의 노트
+- 참고 자료 정리 (공개)
 
 ## 🔗 관련 링크
 
