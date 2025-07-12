@@ -1,0 +1,1104 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://cozzin.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://cozzin.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-07-12T23:33:45+00:00</updated><id>https://cozzin.github.io/feed.xml</id><title type="html">cozzin tech blog</title><subtitle>A minimal, responsive, and powerful Jekyll theme for presenting professional writing.</subtitle><entry xml:lang="en"><title type="html">Experiences of an App Store Deployment Manager - From Expedited Review to Scheduled Deployment</title><link href="https://cozzin.github.io/posts/app-store-deployment-experience-en/" rel="alternate" type="text/html" title="Experiences of an App Store Deployment Manager - From Expedited Review to Scheduled Deployment" /><published>2025-06-18T03:00:00+00:00</published><updated>2025-06-18T15:34:25+00:00</updated><id>https://cozzin.github.io/posts/app-store-deployment-experience-en</id><content type="html" xml:base="https://cozzin.github.io/posts/app-store-deployment-experience-en/"><![CDATA[<h2 id="introduction">Introduction</h2>
+
+<p>I recently took on the role of App Store deployment manager. While I had mostly handled regular releases before without any special issues, this time I learned a lot through multiple deployment cycles.</p>
+
+<p>This deployment was particularly special. We needed to deploy features after a specific date, with x.x.0 version pre-deployed and x.x.1 version to be deployed with updated screenshots and app descriptions.</p>
+
+<p>I wanted to start deployment on Sunday morning and submitted for review on Friday afternoon, so it wasn’t a relaxed situation. That’s why I requested an expedited review.</p>
+
+<p>However, unexpected problems occurred continuously. The first submission was rejected due to screenshot regulation violations, I accidentally cancelled an approved build, and scheduled deployment didn’t work properly.</p>
+
+<p>In this post, I’ll organize the actual problems I encountered, solutions, and lessons learned according to the deployment process flow.</p>
+
+<h2 id="pre-submission-preparation-process">Pre-Submission Preparation Process</h2>
+
+<h3 id="first-rejection-due-to-screenshot-regulation-violation">First Rejection Due to Screenshot Regulation Violation</h3>
+
+<p>The first problem I encountered was screenshot regulations. I received screenshots from the designer but <strong>didn’t know that price information couldn’t be included</strong>.</p>
+
+<p>The word “Free” was included in the screenshot image, which caused the review to be rejected. After removing the price information, the review passed.</p>
+
+<p>Interestingly, <strong>price information can be included in app descriptions</strong>. It’s strange that the regulations for screenshots and app descriptions are different.</p>
+
+<h3 id="special-character-usage-restrictions">Special Character Usage Restrictions</h3>
+
+<p>When I tried to include <code class="language-plaintext highlighter-rouge">&lt;</code> characters typed from the keyboard in the app description, I got an error saying <strong>“contains words that cannot be used”</strong>.</p>
+
+<p>To solve this problem, I found and used special characters similar to <code class="language-plaintext highlighter-rouge">&lt;</code>:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">〈</code> (U+2329) - left-pointing angle bracket</li>
+  <li><code class="language-plaintext highlighter-rouge">〉</code> (U+232A) - right-pointing angle bracket</li>
+</ul>
+
+<p>They looked properly displayed to the eye, and it seems to be a policy restriction of App Store Connect.</p>
+
+<h3 id="strategy-for-screenshot-updates">Strategy for Screenshot Updates</h3>
+
+<p>There was a situation where I needed to quickly change screenshots to reflect business content. However, it was impossible to change only screenshots and app descriptions without updating the app version.</p>
+
+<p>Following a colleague’s advice, I used the <strong>strategy of preparing the next build in advance</strong> for screenshot updates. I created a build with only the version changed from the same implementation, and requested a review with updated screenshots and descriptions immediately after the previous version’s review was completed.</p>
+
+<p>This method made rapid screenshot updates possible.</p>
+
+<h2 id="expedited-review">Expedited Review</h2>
+
+<p>After updating screenshots and app descriptions, I requested an expedited review. I had only seen others do it before, but this was my first time requesting it directly. It seems like in the past you could write a message explaining why expedited review was needed, but now that input field is gone.</p>
+
+<p>Currently, on the <a href="https://developer.apple.com/contact/">Apple Developer Contact</a> page, you just need to enter App Name and Platform in <strong>App Review &gt; Request Expedited App Review &gt; App Review Inquiry &gt; App Information</strong>.</p>
+
+<p>Initially, the review was rejected due to regulation violations in screenshots and app descriptions, but when I resubmitted after fixing them, they were approved within 1-2 hours. I could directly feel the effect of expedited review.</p>
+
+<p>I’m embarrassed to share this, but I accidentally cancelled an approved expedited review. The submission was cancelled due to a mistake while running an automation script… I was sweating and very surprised at the moment. Fortunately, when I resubmitted, it was approved within 1 hour.</p>
+
+<h2 id="misunderstandings-about-scheduled-deployment-and-gradual-rollout">Misunderstandings About Scheduled Deployment and Gradual Rollout</h2>
+
+<h3 id="instability-of-scheduled-deployment">Instability of Scheduled Deployment</h3>
+
+<p>There was a situation where release was needed at 6 AM, so I tried using scheduled deployment. It was set exactly with local date and time in App Store Connect, but strangely it didn’t work properly.</p>
+
+<p>It remained in <strong>“Pending Release”</strong> status. After waiting about 20 minutes with no change, I finally changed it to <strong>“Manually Release Version”</strong> and started the release directly.</p>
+
+<p>The scheduled deployment feature seems convenient but sometimes unstable. I haven’t tried it many times, so I plan to try it again later in personal projects.</p>
+
+<h3 id="misunderstanding-about-gradual-rollout">Misunderstanding About Gradual Rollout</h3>
+
+<p>I was completely wrong about gradual rollout. Initially, I thought it would be shown to users gradually on the App Store, like A/B testing.</p>
+
+<p>Actually, it’s <strong>immediately visible to all users on the App Store</strong>, and the <strong>gradual rollout feature only applies to users who allow automatic updates</strong>.</p>
+
+<p>This was a big misunderstanding because I didn’t properly understand this point.</p>
+
+<h2 id="precautions-discovered-during-resubmission-process">Precautions Discovered During Resubmission Process</h2>
+
+<h3 id="precautions-when-cancelling-in-app-events">Precautions When Cancelling In-App Events</h3>
+
+<p>I discovered something to be careful about when cancelling app review submissions. A specific marketing event was registered as an in-app event, and when I cancelled the app review submission, the <strong>in-app event was also cancelled</strong>.</p>
+
+<p>When cancelling a release, it’s good to check if there were in-app events in the review target, and if there were, notify the marketing team in advance.</p>
+
+<h3 id="apple-review-speed-improvement">Apple Review Speed Improvement</h3>
+
+<p>Even without expedited review, <strong>it was possible to go from review registration to deployment within 24 hours</strong>. I had heard that Apple’s review speed had improved compared to before, and I could actually feel it.</p>
+
+<p>There could be various factors like app category, review complexity, etc., but overall the review speed seems to have improved.</p>
+
+<h2 id="lessons-as-a-deployment-manager">Lessons as a Deployment Manager</h2>
+
+<p>It was an important deployment, so I was worried and felt a lot of pressure. Still, I learned a lot through this deployment process. I especially realized the <strong>importance of advance preparation</strong> through direct experience with App Store’s complex policies and unexpected restrictions.</p>
+
+<p>Key lessons learned:</p>
+
+<ul>
+  <li><strong>Screenshot Regulations</strong>: Price information prohibited, different from app description regulations</li>
+  <li><strong>Expedited Review</strong>: No message input field, separate request through Apple Developer Contact</li>
+  <li><strong>Screenshot Updates</strong>: New version required, prepare build in advance strategy</li>
+  <li><strong>Special Character Restrictions</strong>: Can be replaced with Unicode special characters</li>
+  <li><strong>Scheduled Deployment</strong>: Unstable in this experience</li>
+  <li><strong>Gradual Rollout</strong>: Unrelated to App Store exposure, only applies to automatic update users</li>
+  <li><strong>In-App Events</strong>: Cancelled together when review is cancelled, advance consultation needed</li>
+</ul>
+
+<p>It suddenly occurred to me that it would be nice to have a service that checks in advance whether there’s anything that would violate App Store regulations.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I think App Store deployment is not just uploading builds and waiting for review, but a complex process that requires understanding and responding to various policies and restrictions. This time too, I learned a lot with the help of team members. While experiencing issues, I used to think I was unlucky, but these days I’ve strangely become more positive, so I feel good about accumulating good experiences and memories. Anyway, I have hope that I’ll be more skilled in the next deployment.</p>
+
+<hr />
+
+<p><strong>References</strong></p>
+<ul>
+  <li><a href="https://developer.apple.com/contact/">Apple Developer Contact</a></li>
+  <li><a href="https://graphemica.com/%E2%8C%A9">Unicode Character Database - U+2329</a></li>
+  <li><a href="https://graphemica.com/%E2%8C%AA">Unicode Character Database - U+232A</a></li>
+</ul>]]></content><author><name></name></author><category term="iOS" /><category term="iOS" /><category term="App Store" /><category term="Deployment" /><category term="App Store Connect" /><summary type="html"><![CDATA[Introduction]]></summary></entry><entry xml:lang="ko-KR"><title type="html">앱 배포 담당자가 겪은 일들 - 긴급 심사부터 예약 배포까지</title><link href="https://cozzin.github.io/posts/app-store-deployment-experience/" rel="alternate" type="text/html" title="앱 배포 담당자가 겪은 일들 - 긴급 심사부터 예약 배포까지" /><published>2025-06-18T03:00:00+00:00</published><updated>2025-06-18T15:22:36+00:00</updated><id>https://cozzin.github.io/posts/app-store-deployment-experience</id><content type="html" xml:base="https://cozzin.github.io/posts/app-store-deployment-experience/"><![CDATA[<h2 id="들어가며">들어가며</h2>
+
+<p>이번에 App Store 배포를 담당하게 되었습니다. 그 동안은 대부분 정규 릴리즈 담당이었어서 특별한 이슈가 없었는데, 이번에는 여러 번의 배포를 거치면서 많은 것을 배웠습니다.</p>
+
+<p>특히 이번 배포는 특별했습니다. 특정 날짜 이후로 기능이 배포되어야 하는 상황이었고, x.x.0 버전은 미리 배포해두고, x.x.1 버전을 스크린샷과 앱 설명을 업데이트해서 배포해야 했어요.</p>
+
+<p>일요일 오전에 배포를 시작하고 싶었고, 금요일 오후에 심사 제출을 했기 때문에 여유로운 상황은 아니었습니다. 그래서 긴급 심사 요청을 하게 되었습니다.</p>
+
+<p>그런데 예상치 못한 문제들이 연속으로 발생했습니다. 스크린샷 규정 위반으로 첫 번째 제출이 리젝되었고, 승인 받았던 빌드를 실수로 취소했고, 예약 배포도 제대로 작동하지 않았습니다.</p>
+
+<p>이번 글에서는 실제로 겪은 문제들과 해결 방법, 그리고 배운 점들을 배포 과정의 흐름에 따라 정리해보겠습니다.</p>
+
+<h2 id="심사-제출-전-준비-과정">심사 제출 전 준비 과정</h2>
+
+<h3 id="스크린샷-규정-위반으로-첫-번째-리젝">스크린샷 규정 위반으로 첫 번째 리젝</h3>
+
+<p>첫 번째로 마주한 문제는 스크린샷 규정이었습니다. 스크린샷은 디자이너에게 받았는데, <strong>가격 정보가 포함되면 안 된다는 사실을 몰랐습니다</strong>.</p>
+
+<p>“무료”라는 표현이 스크린샷 이미지에 포함되어 있었는데, 이것 때문에 심사에서 반려되었습니다. 가격 정보를 제거하니 심사를 통과했어요.</p>
+
+<p>흥미로운 점은 <strong>앱 설명에는 가격 정보가 포함되어도 된다</strong>는 것입니다. 스크린샷과 앱 설명의 규정이 다르다는 점이 이상하더라고요.</p>
+
+<h3 id="특수문자-사용-제한">특수문자 사용 제한</h3>
+
+<p>앱 설명에 <code class="language-plaintext highlighter-rouge">&lt;</code> 키보드로 입력한 꺾쇠 문자를 넣으면 <strong>“사용할 수 없는 단어가 포함되어 있다”</strong>는 에러가 발생했습니다.</p>
+
+<p>이 문제를 해결하기 위해 <code class="language-plaintext highlighter-rouge">&lt;</code>과 비슷한 특수문자를 찾아서 사용했습니다:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">〈</code> (U+2329) - left-pointing angle bracket</li>
+  <li><code class="language-plaintext highlighter-rouge">〉</code> (U+232A) - right-pointing angle bracket</li>
+</ul>
+
+<p>눈으로 봤을 때는 제대로 표시되었고, App Store Connect의 정책상 제한사항인 것 같습니다.</p>
+
+<h3 id="스크린샷-업데이트를-위한-전략">스크린샷 업데이트를 위한 전략</h3>
+
+<p>비즈니스 내용을 반영하기 위해 빠르게 스크린샷을 바꿔야 하는 상황이 있었습니다. 그런데 앱 버전을 올리지 않고 스크린샷과 앱 설명만 바꾸는 것은 불가능하더라고요.</p>
+
+<p>동료의 조언을 듣고 스크린샷 업데이트를 위해 <strong>다음 빌드를 미리 만들어두는 전략</strong>을 사용했습니다. 동일한 구현에 버전만 바꿔서 빌드를 만들어두고, 앞선 버전의 심사가 완료된 직후 업데이트된 스크린샷과 설명으로 심사 요청을 했습니다.</p>
+
+<p>이 방법 덕분에 빠른 스크린샷 업데이트가 가능했어요.</p>
+
+<h2 id="긴급-심사">긴급 심사</h2>
+
+<p>스크린샷과 앱 설명을 업데이트한 후 긴급 심사를 요청했습니다. 남들이 진행하는 것을 보기만 했는데 직접 요청한 것은 처음이었습니다. 예전에는 긴급 심사가 필요한 이유를 메시지로 작성할 수 있었던 것 같은데, 지금은 그런 입력란이 없어졌더라고요.</p>
+
+<p>현재는 <a href="https://developer.apple.com/contact/">Apple Developer Contact</a> 페이지에서 <strong>앱 심사 &gt; 빠른 앱 심사 요청 &gt; 앱 심사 문의 &gt; App Information</strong>에서 App Name과 Platform만 입력하면 끝입니다.</p>
+
+<p>처음에는 스크린샷과 앱 설명에 규정 위반 사항이 있어서 반려되었는데, 수정해서 다시 제출했을 때는 1~2시간 안에 승인해주더라고요. 긴급 심사의 효과를 직접 체감할 수 있었습니다.</p>
+
+<p>공유하기 부끄럽지만 긴급 심사를 통해 승인되었던 것을 실수로 취소했습니다. 자동화 스크립트 실행 중 실수로 제출이 취소되었습니다… 순간 식은땀나고 아주 당황했어요. 다행히 다시 제출했을 때 1시간 내로 승인되었습니다.</p>
+
+<h2 id="예약-배포와-점진적-배포에-대한-오해">예약 배포와 점진적 배포에 대한 오해</h2>
+
+<h3 id="예약-배포의-불안정성">예약 배포의 불안정성</h3>
+
+<p>아침 6시에 릴리즈되어야 하는 상황이 있어서 예약 배포를 사용해보았습니다. App Store Connect에서 현지 날짜와 시간으로 정확하게 설정되어 있었는데, 이상하게도 제대로 작동하지 않았어요.</p>
+
+<p><strong>“출시 대기 중”</strong> 상태로 계속 남아있었습니다. 20분 정도 기다려도 변화가 없어서 결국 <strong>“수동으로 버전 출시”</strong>로 변경한 후 직접 출시 시작을 했습니다.</p>
+
+<p>예약 배포 기능은 편리해 보이지만 가끔은 안정적이지 않은 것 같습니다. 여러번 해본 것은 아니라서 개인 프로젝트에서 나중에 다시 써보려고 합니다.</p>
+
+<h3 id="점진적-배포에-대한-오해">점진적 배포에 대한 오해</h3>
+
+<p>점진적 배포에 대해서는 완전히 잘못 알고 있었습니다. 처음에는 마치 A/B 테스트처럼 App Store에서도 점진적으로 유저에게 보여진다고 생각했어요.</p>
+
+<p>실제로는 <strong>App Store에는 모든 유저에게 즉시 공개</strong>되고, <strong>자동 업데이트를 허용한 유저에게만 점진적으로 배포</strong>되는 기능이었습니다.</p>
+
+<p>이 점을 제대로 이해하지 못하고 있었던 게 큰 오해였네요.</p>
+
+<h2 id="재제출-과정에서-발견한-주의사항들">재제출 과정에서 발견한 주의사항들</h2>
+
+<h3 id="앱-내-이벤트-취소-시-주의사항">앱 내 이벤트 취소 시 주의사항</h3>
+
+<p>앱 심사 제출을 취소할 때 주의해야 할 점을 발견했습니다. 특정 마케팅 이벤트가 앱 내 이벤트로 등록되어 있었는데, 앱 심사 제출을 취소하면서 <strong>앱 내 이벤트도 함께 취소</strong>되었습니다.</p>
+
+<p>출시를 취소할 때는 심사 대상에 앱 내 이벤트가 있었는지 확인해보고, 있다면 마케팅 담당자에게 미리 알려주는 것이 좋겠습니다.</p>
+
+<h3 id="apple-심사-속도-개선">Apple 심사 속도 개선</h3>
+
+<p>긴급 심사가 아니더라도 <strong>24시간 이내에 심사 등록부터 배포까지 가능</strong>했습니다. 예전에 비해 Apple의 심사 속도가 빨라졌다는 얘기를 몇 년 전부터 들었는데, 실제로 체감할 수 있었습니다.</p>
+
+<p>앱 카테고리, 심사 복잡도 등 여러 요인이 있을 수 있겠지만, 전반적으로 심사 속도가 개선된 것 같습니다.</p>
+
+<h2 id="배포-담당자로서의-배움">배포 담당자로서의 배움</h2>
+
+<p>중요한 배포였어서 걱정도 있었고 압박감을 많이 느꼈습니다. 그래도 이번 배포를 거치면서 많은 것을 배웠습니다. 특히 App Store의 복잡한 정책들과 예상치 못한 제한사항들을 직접 경험하면서, <strong>사전 준비의 중요성</strong>을 깨달았습니다.</p>
+
+<p>주요 배운 점들을 정리하면:</p>
+
+<ul>
+  <li><strong>스크린샷 규정</strong>: 가격 정보 포함 금지, 앱 설명과는 다른 규정</li>
+  <li><strong>긴급 심사</strong>: 메시지 입력란 없음, Apple Developer Contact에서 별도 요청</li>
+  <li><strong>스크린샷 업데이트</strong>: 새 버전 필요, 미리 빌드 준비 전략</li>
+  <li><strong>특수문자 제한</strong>: 유니코드 특수문자로 대체 가능</li>
+  <li><strong>예약 배포</strong>: 이번 경험에서 불안정했음</li>
+  <li><strong>점진적 배포</strong>: App Store 노출과 무관, 자동 업데이트 사용자에게만 적용</li>
+  <li><strong>앱 내 이벤트</strong>: 심사 취소 시 함께 취소됨, 사전 협의 필요</li>
+</ul>
+
+<p>갑자기 생각났는데 앱스토어 규정 위반에 걸릴게 없는지 미리 확인해주는 서비스가 있으면 좋을 것도 같네요.</p>
+
+<h2 id="마무리">마무리</h2>
+
+<p>App Store 배포는 단순히 빌드를 업로드하고 심사를 기다리는 것이 아니라, 다양한 정책과 제한사항을 이해하고 대응해야 한다고 생각해요. 이번에도 팀원들의 도움을 받으며 많은 것을 배울 수 있었습니다. 이슈들을 겪으면서 예전에는 운이 없었다고 생각했던거 같은데, 요즘에는 이상하게 긍정적으로 변해서 좋은 경험과 추억거리가 쌓여서 기분이 좋기도 합니다. 아무튼 다음번 배포 때는 좀 더 능숙할거라는 희망을 가져봅니다.</p>
+
+<hr />
+
+<p><strong>참고 자료</strong></p>
+<ul>
+  <li><a href="https://developer.apple.com/contact/">Apple Developer Contact</a></li>
+  <li><a href="https://graphemica.com/%E2%8C%A9">Unicode Character Database - U+2329</a></li>
+  <li><a href="https://graphemica.com/%E2%8C%AA">Unicode Character Database - U+232A</a></li>
+</ul>]]></content><author><name></name></author><category term="iOS" /><category term="iOS" /><category term="App Store" /><category term="배포" /><category term="App Store Connect" /><summary type="html"><![CDATA[들어가며]]></summary></entry><entry><title type="html">[코드숨] 스프링 회고</title><link href="https://cozzin.github.io/posts/codesoom-8week/" rel="alternate" type="text/html" title="[코드숨] 스프링 회고" /><published>2022-08-28T06:00:00+00:00</published><updated>2022-08-28T08:54:30+00:00</updated><id>https://cozzin.github.io/posts/codesoom-8week</id><content type="html" xml:base="https://cozzin.github.io/posts/codesoom-8week/"><![CDATA[<p>8주간의 코드숨 스프링 과정이 끝났습니다!
+매일 저녁마다 해야 하는 과제가 사라진다는 마음에 후련하기도 하고, 더 많이 배우지 못한 것에 대한 아쉬움도 느껴지네요.
+이번 글에서는 8주차 회고 겸 전체 과정을 회고하겠습니다.</p>
+
+<h2 id="8주차-회고---배포-준비">8주차 회고 - 배포 준비</h2>
+
+<p>8주차에는 <code class="language-plaintext highlighter-rouge">SpringDocs</code>와 <code class="language-plaintext highlighter-rouge">배포 준비</code>가 주제였습니다. Swagger가 아닌 SpringDocs로 문서화 해보는 경험이 새로웠습니다.
+Docs 만드는 방식은 팀마다 다를 것으로 생각해서 이 과제에서는 가볍게 실험해보는 정도까지만 진행했습니다.
+대신 배포하는 것에 좀 더 많은 시간을 할애했습니다.</p>
+
+<p>이미 배포 프로세스가 갖춰진 팀에서는 배포할 때 별다른 수고를 하지 않아도 될 텐데요.
+그래서 이렇게 아무것도 세팅되지 않은 환경에서 배포하는 게 중요한 경험이라고 생각했습니다.
+오랜만에 AWS에 인스턴스도 만들었습니다. 그리고 띄워둔 서버에 API 호출해보는 과정이 즐거웠습니다.
+이전에 사용해보지 못했던 docker를 잠깐 사용해봤는데, 굉장히 편리한 도구라는 것을 알게 되었습니다.
+이렇게 간단한 방식으로 배포까지 해보니 토이 프로젝트를 만들어서 배포할 수 있겠다는 생각이 들었습니다.</p>
+
+<h2 id="학습하는-습관">학습하는 습관</h2>
+
+<p>4주차 까지는 주제를 정하고 탐구하는 시간을 충분히 가졌는데, 그 시간을 통해서 많은 경험을 얻을 수 있었습니다.
+그 이후로는 개인적인 일정 때문에 충분한 시간을 들여서 탐구하지는 못했습니다.
+하지만 매일 저녁이 되면 무엇이 되든 학습하는 습관이 생겼습니다.
+어떤 일을 잘게 나눠서 목표로 잡는 것도 좋지만, 시간을 자체를 할애하는 게 중요하다는 것을 알게 되었습니다.</p>
+
+<h2 id="백엔드-개발-첫-걸음">백엔드 개발 첫 걸음</h2>
+
+<p>백엔드 공부를 왜 하는가 하는 질문을 몇 번 들었습니다. 
+이전에도 내가 원하는 앱을 만들기 위해서 작은 기능을 하는 서버를 구동한 적이 몇 번 있었습니다.
+그때마다 서버 구현을 제대로 못 하거나 데이터베이스 지식이 부족해서 기능을 제한시키고, 
+결국에는 매력적인 서비스를 만들지 못한 경험을 여러 차례 했어요.
+팀을 이뤄서 프로젝트를 만드는 것도 한 번씩 하고 있지만, 제가 원하는 제대로 된 서비스를 설계하려면 백엔드 지식이 필요하다고 판단했습니다.</p>
+
+<p>iOS 개발로만 주로 경력을 쌓아와서 iOS 개발하고 학습하는 데는 큰 어려움이 없습니다. 
+하지만 10년, 20년, 그리고 평생 IT 업계에서 일하려면 서버 개발에 대한 막연한 두려움을 제거할 필요가 있다고 생각했어요.
+이번 기회를 통해서 막연한 두려움을 제거하고, <code class="language-plaintext highlighter-rouge">모르는 것을 모르는 단계</code>에서 <code class="language-plaintext highlighter-rouge">모르는 것을 아는 단계</code>로 진입하게 되었다고 생각합니다.
+8주간 도움 주신 많은 분께 감사하고, 스스로 계속 발전할 기회를 주는 나 자신에게도 고맙다고 전하고 싶습니다.
+특별히 코스를 시작할 수 있게 용기를 주고 지지해준 아내에게 많은 고마움을 전합니다.</p>]]></content><author><name></name></author><category term="Spring" /><category term="Spring" /><category term="Docs" /><summary type="html"><![CDATA[8주간의 코드숨 스프링 과정이 끝났습니다! 매일 저녁마다 해야 하는 과제가 사라진다는 마음에 후련하기도 하고, 더 많이 배우지 못한 것에 대한 아쉬움도 느껴지네요. 이번 글에서는 8주차 회고 겸 전체 과정을 회고하겠습니다.]]></summary></entry><entry><title type="html">AWS EC2 생성하고 Github Repository Clone하기</title><link href="https://cozzin.github.io/posts/create-aws-ec2-instance/" rel="alternate" type="text/html" title="AWS EC2 생성하고 Github Repository Clone하기" /><published>2022-08-24T11:00:00+00:00</published><updated>2022-08-24T11:00:00+00:00</updated><id>https://cozzin.github.io/posts/create-aws-ec2-instance</id><content type="html" xml:base="https://cozzin.github.io/posts/create-aws-ec2-instance/"><![CDATA[<p>오랜만에 AWS에 EC2 서버 띄우려고 합니다.
+https://velog.io/@18k7102dy/devops-mono-5, https://velog.io/@18k7102dy/Docker-Spring-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A5%BC-Docker%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%B4%EC%84%9C-%EB%B0%B0%ED%8F%AC%ED%95%B4%EB%B4%85%EC%8B%9C%EB%8B%A4
+이 글 보면서 따라갑니다.
+위의 글이 더 정확할 수 있습니다. 그래도 미래의 저를 위해서 기록해보겠습니다.</p>
+
+<h2 id="ec2-instance-생성하기">EC2 instance 생성하기</h2>
+
+<p>잊어버린 비밀번호를 찾고ㅋㅋ EC2로 검색해서 들어왔습니다.
+EC2 instance 생성 화면이 달라진 것 같아서 캡쳐하면서 진행합니다.</p>
+
+<p><img src="/assets/images/2022-08-24-19-20-32.png" alt="" /></p>
+
+<p><img src="/assets/images/2022-08-24-19-21-11.png" alt="" /></p>
+
+<p>기본 설정과 동일하게 <code class="language-plaintext highlighter-rouge">Amazon Linux</code> 를 선택</p>
+
+<p><img src="/assets/images/2022-08-24-19-25-04.png" alt="" /></p>
+
+<p>Network settings도 기본으로 둡니다.
+혹시 나중에 이슈 생기면 수정할 예정</p>
+
+<p><img src="/assets/images/2022-08-24-19-25-45.png" alt="" /></p>
+
+<p>새로운 key piar 생성하겠습니다.</p>
+
+<p><img src="/assets/images/2022-08-24-19-34-16.png" alt="" /></p>
+
+<p><img src="/assets/images/2022-08-24-19-35-40.png" alt="" /></p>
+
+<p>자동으로 다운되는 pem 파일은 로컬에 잘 보관하기</p>
+
+<p><img src="/assets/images/2022-08-24-19-38-03.png" alt="" /></p>
+
+<p>프리티어는 30GiB까지 무료</p>
+
+<p><img src="/assets/images/2022-08-24-19-29-04.png" alt="" /></p>
+
+<p>일단 이렇게 고고</p>
+
+<p><img src="/assets/images/2022-08-24-19-31-27.png" alt="" /></p>
+
+<p>1초만에 만들어졌다…</p>
+
+<p><img src="/assets/images/2022-08-24-19-38-49.png" alt="" /></p>
+
+<h2 id="security-group-설정하기">Security Group 설정하기</h2>
+
+<p><img src="/assets/images/2022-08-24-19-53-41.png" alt="" /></p>
+
+<p>SSH만 기본적으로 설정된 것을 볼 수 있습니다.
+<code class="language-plaintext highlighter-rouge">Edit inbound rules</code>를 선택해서 HTTP 통신을 위한 80포트도 추가해줍니다.</p>
+
+<p><img src="/assets/images/2022-08-24-19-55-42.png" alt="" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">Add rule</code>을 선택합니다.</p>
+
+<p><img src="/assets/images/2022-08-24-19-57-10.png" alt="" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">HTTP</code> 선택!</p>
+
+<p><img src="/assets/images/2022-08-24-19-57-52.png" alt="" /></p>
+
+<p><img src="/assets/images/2022-08-24-19-58-45.png" alt="" /></p>
+
+<p><img src="/assets/images/2022-08-24-19-59-10.png" alt="" /></p>
+
+<h2 id="ssh-접속하기">ssh 접속하기</h2>
+
+<p><img src="/assets/images/2022-08-24-19-44-14.png" alt="" /></p>
+
+<p>pem은 public key file인데 실행권한을 줘야합니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">chmod </span>400 ./spring-server-key-pair.pem
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>만약 실행권한이 없으면 아래와 같은 에러를 만나게 됩니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Permission denied <span class="o">(</span>publickey,gssapi-keyex,gssapi-with-mic<span class="o">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>권한을 설정해줬으면 아래 명령어를 실행해서 ssh통해서 서버에 접속합니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ssh <span class="nt">-i</span> ./spring-server-key-pair.pem ec2-user@&lt;Public-IP&gt;
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="서버-환경설정">서버 환경설정</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>sudo yum update
+
+# git 설치
+sudo yum install git
+
+# docker 설치
+sudo yum install docker
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="server-deploy-key를-github-repository에-등록">Server deploy key를 Github Repository에 등록</h2>
+
+<p>key 생성</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ssh-keygen -t rsa
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>key 복사</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>cd .ssh
+cat id_rsa.pub
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Gihub Setting &gt; Deploy keys &gt; Add deploy key</p>
+
+<p><img src="/assets/images/2022-08-24-20-06-24.png" alt="" /></p>
+
+<p>복사해둔 key를 붙여넣고 <code class="language-plaintext highlighter-rouge">Add key</code> 해주시면 됩니다.</p>
+
+<p><img src="/assets/images/2022-08-24-20-07-41.png" alt="" /></p>
+
+<h2 id="server-deploy-key를-github-account에-등록">Server deploy key를 Github Account에 등록</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ssh-keygen -t rsa -C &lt;your github email&gt;
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>cat id_rsa.pub
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="/assets/images/2022-08-24-20-11-17.png" alt="" /></p>
+
+<p><img src="/assets/images/2022-08-24-20-13-00.png" alt="" /></p>
+
+<h2 id="서버에-git-clone">서버에 git clone</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>cd ~
+git clone &lt;your address of repository (SSH Address)&gt;
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="참고자료">참고자료</h2>
+<ul>
+  <li>https://velog.io/@18k7102dy/devops-mono-5</li>
+  <li>https://velog.io/@18k7102dy/Docker-Spring-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A5%BC-Docker%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%B4%EC%84%9C-%EB%B0%B0%ED%8F%AC%ED%95%B4%EB%B4%85%EC%8B%9C%EB%8B%A4</li>
+</ul>]]></content><author><name></name></author><category term="Spring" /><category term="Spring" /><category term="AWS" /><category term="EC2" /><summary type="html"><![CDATA[오랜만에 AWS에 EC2 서버 띄우려고 합니다. https://velog.io/@18k7102dy/devops-mono-5, https://velog.io/@18k7102dy/Docker-Spring-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A5%BC-Docker%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%B4%EC%84%9C-%EB%B0%B0%ED%8F%AC%ED%95%B4%EB%B4%85%EC%8B%9C%EB%8B%A4 이 글 보면서 따라갑니다. 위의 글이 더 정확할 수 있습니다. 그래도 미래의 저를 위해서 기록해보겠습니다.]]></summary></entry><entry><title type="html">[코드숨] 스프링 7주차 회고 - 보안</title><link href="https://cozzin.github.io/posts/codesoom-7week/" rel="alternate" type="text/html" title="[코드숨] 스프링 7주차 회고 - 보안" /><published>2022-08-24T00:00:00+00:00</published><updated>2022-08-24T00:00:00+00:00</updated><id>https://cozzin.github.io/posts/codesoom-7week</id><content type="html" xml:base="https://cozzin.github.io/posts/codesoom-7week/"><![CDATA[<ul>
+  <li>Authentication: 몇 년 전에 사이드 프로젝트를 위한 서버를 만든 적 있었는데, 인증을 구현하는 것이 큰 관문이었다. 
+물론 지금도 쉽지는 않지만 이제 내 서비스를 만들 수 있겠다는 생각이 든다.</li>
+  <li>암호화: 복호화되지 않는 암호화에 대해서 이해가 잘 되지 않았어서 좀 더 살펴봤다.
+간단히 말하면 해쉬 값 비교를 통해 동등성을 검증하는 방식이다.
+계정 정보 보관은 여전히 두려운 주제이지만 서버개발에서 피해갈 수 없는 부분이다.</li>
+  <li>리뷰 요청: 지난주 중반까지 PR 리뷰가 되지 않고 있었는데, 따로 요청을 드리지 않았다.
+회사일이 바쁘기도 해서 하루하루 미루다보니 3일 정도 지나있었다.
+다른 일을 할 때도 조금 지연되었을 때 게으름과 걱정을 이겨내고 바로 도움을 요청하자.
+도움을 늦게 요청하면 나만 손해보게 된다.</li>
+</ul>]]></content><author><name></name></author><category term="Spring" /><category term="Spring" /><category term="Security" /><summary type="html"><![CDATA[Authentication: 몇 년 전에 사이드 프로젝트를 위한 서버를 만든 적 있었는데, 인증을 구현하는 것이 큰 관문이었다. 물론 지금도 쉽지는 않지만 이제 내 서비스를 만들 수 있겠다는 생각이 든다. 암호화: 복호화되지 않는 암호화에 대해서 이해가 잘 되지 않았어서 좀 더 살펴봤다. 간단히 말하면 해쉬 값 비교를 통해 동등성을 검증하는 방식이다. 계정 정보 보관은 여전히 두려운 주제이지만 서버개발에서 피해갈 수 없는 부분이다. 리뷰 요청: 지난주 중반까지 PR 리뷰가 되지 않고 있었는데, 따로 요청을 드리지 않았다. 회사일이 바쁘기도 해서 하루하루 미루다보니 3일 정도 지나있었다. 다른 일을 할 때도 조금 지연되었을 때 게으름과 걱정을 이겨내고 바로 도움을 요청하자. 도움을 늦게 요청하면 나만 손해보게 된다.]]></summary></entry><entry><title type="html">[코드숨] 스프링 6주차 회고 - 로그인</title><link href="https://cozzin.github.io/posts/codesoom-6week/" rel="alternate" type="text/html" title="[코드숨] 스프링 6주차 회고 - 로그인" /><published>2022-08-15T08:59:00+00:00</published><updated>2022-08-15T08:59:00+00:00</updated><id>https://cozzin.github.io/posts/codesoom-6week</id><content type="html" xml:base="https://cozzin.github.io/posts/codesoom-6week/"><![CDATA[<h2 id="요약">요약</h2>
+
+<p>지난주는 JWT 이용해서 로그인 구현하는 과제를 수행했습니다.
+혼자 사이드 프로젝트를 수행할 때 로그인 기능을 만들 때 어려움을 겪었었는데,
+JWT 토큰을 만들고 주고 받는걸 구현해볼 수 있어서 흥미로웠습니다.
+다음에 로그인 기능을 구현할 때 써먹을 수 있을 것 같아서 기대됩니다.
+아래는 이번 주에 알게된 2가지 개념입니다.</p>
+
+<h2 id="lombok-사용시-주의할-점">Lombok 사용시 주의할 점</h2>
+
+<p>Java에서 모델을 다룰 때 lombok 이라는 라이브러리를 사용해서 Getter, Setter를 자동으로 만들어 줄 수 있습니다.
+재밌는 점은 이런 메타 프로그래밍 기법을 사용하면 Code Generator 통해서 생성된 코드를 직접 커밋하는 것은 아니라는 점 입니다.
+lombok 사용할 때는 주의할 점이 있습니다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">@Setter</code> 사용 자제하기
+    <ul>
+      <li>클래스 레벨에서 사용하게 되면 모든 필드들이 언제든지 변경될 수 있는 상태가 됩니다.</li>
+      <li>Setter가 많아지면 작성자의 의도를 드러내기 힘들어 집니다.</li>
+      <li>constructor나 <code class="language-plaintext highlighter-rouge">@Builder</code> 통해서 세팅해주는 것이 좋습니다.</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">@AllArgsConstructor</code> 사용 자제하기
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">@AllArgsConstructor</code>는 클래스 내부의 필드들을 위한 constructor를 자동으로 만들어주는 간편한 기능입니다.</li>
+      <li>필드 순서가 변경되었을 떄 constructor의 필드 순서도 변경될 수 있습니다.</li>
+      <li>순서가 변경된 필드의 타입이 같은 경우 의도치 않은 동작의 변경이 있을 수 있습니다.</li>
+      <li><code class="language-plaintext highlighter-rouge">@AllArgsConstructor</code>를 쓰지말고 직접 constructor를 생성하는 것이 좋습니다.</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">@NoArgsConstructor</code> 사용하지 않는 방법도 있음
+    <ul>
+      <li>Spring 통해서 DTO로 변환시키는 과정에서 <code class="language-plaintext highlighter-rouge">HttpMessageConverter</code>가 모델로 매핑해주는데요. 
+이럴 떄 깡통 객체를 먼저 생성해두고 해당 필드에 값을 매핑해줍니다. 
+그래서 argument가 없는 constructor가 필요하게 되고 <code class="language-plaintext highlighter-rouge">@NoArgsConstructor</code>를 사용하게 됩니다.</li>
+      <li>이럴 때 매핑이 필요한 필드가 들어있는 constructor를 직접 구현하고 <code class="language-plaintext highlighter-rouge">@JsonCreator</code>를 붙여주면 <code class="language-plaintext highlighter-rouge">HttpMessageConverter</code>가 해당 constructor를 사용하게 됩니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="마커-인터페이스-패턴">마커 인터페이스 패턴</h2>
+
+<p>아샬님의 강의에서는 <code class="language-plaintext highlighter-rouge">mockito</code> 통해서 테스트를 위한 의존 객체를 mocking 하는 방식을 사용합니다.
+하지만 이 방식이 번거롭기도 하고, 모든 경우의 수에 mocking을 할 것 인가? 라는 고민이 한가지 있었고,
+테스트에서 input - output을 다 정의해 두더라도 미래에 언제든지 해당 클래스의 스펙이 변경될 수 있으니까 유지보수하기 어려운 테스트 코드라는 생각을 했습니다.
+그래서 새로 작성하는 테스트 코드에서는 mocking을 쓰지 않고 작업을 하고 있습니다.
+Repository도 테스트 코드에서 사용할 것을 직접 구현해서 주입해줬습니다.
+그런데 흥미롭게도 아래와 같은 코드를 제안해주셨습니다.</p>
+
+<div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="gd">- public class InMemoryUserRepository implements UserRepository {
+</span><span class="gi">+ public class InMemoryUserRepository implements UserRepository, TestOnly {
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">TestOnly</code>는 아무런 구현도 제약하고 있지 않는 interface 입니다.
+단지 어떤 클래스가 테스트 코드에서만 사용되는 것을 드러내는 장치입니다.
+기존에는 추상화된 객체에 method 호출이 필요할 때 interface 를 사용한다고만 생각했던 것 같습니다. 
+어떤 객체의 의도를 드러낸다는 접근이 신선하게 느껴졌어요.
+앞으로도 유용하게 쓸 것 같습니다.</p>]]></content><author><name></name></author><category term="Spring" /><category term="Spring" /><category term="Login" /><summary type="html"><![CDATA[요약]]></summary></entry><entry><title type="html">[코드숨] 스프링 5주차 회고 - 유효성 검사</title><link href="https://cozzin.github.io/posts/codesoom-5week/" rel="alternate" type="text/html" title="[코드숨] 스프링 5주차 회고 - 유효성 검사" /><published>2022-08-08T10:00:00+00:00</published><updated>2022-08-08T11:30:51+00:00</updated><id>https://cozzin.github.io/posts/codesoom-5week</id><content type="html" xml:base="https://cozzin.github.io/posts/codesoom-5week/"><![CDATA[<p>이번 주는 시간을 충분히 사용하지 못해서 아쉽지만, 아쉬운대로 회고하고 기록을 남겨본다.</p>
+
+<h2 id="유효성-검사">유효성 검사</h2>
+
+<p>이번 주 주제는 유효성 검사였다. 앱 개발할 때 적절한 View를 터치했는지, 적절한 정보를 전달했는지 확인하는 것과 비슷하다.
+API 서버는 Request가 적절한 양식으로 입력되었는지 확인해야 한다. <code class="language-plaintext highlighter-rouge">spring-boot-starter-validation</code> 지루할 수 있는 이 과정을 간편하게 처리해준다.</p>
+
+<p>Controller 외부에서 전달받은 DTO가 적절한 양식인지 확인해주는데, 유효성을 검사하고 싶은 필드에 어노테이션을 지정하면 된다.
+아래는 https://spring.io/guides/gs/validating-form-input/ 예제를 빌려왔다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PersonForm</span> <span class="o">{</span>
+
+	<span class="nd">@NotNull</span>
+	<span class="nd">@Size</span><span class="o">(</span><span class="n">min</span><span class="o">=</span><span class="mi">2</span><span class="o">,</span> <span class="n">max</span><span class="o">=</span><span class="mi">30</span><span class="o">)</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+	<span class="nd">@NotNull</span>
+	<span class="nd">@Min</span><span class="o">(</span><span class="mi">18</span><span class="o">)</span>
+	<span class="kd">private</span> <span class="nc">Integer</span> <span class="n">age</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>그런데 유효성 검사를 아무때나 해주는건 아니다. Controller의 파라미터에 <code class="language-plaintext highlighter-rouge">@Valid</code> 라는 어노테이션을 지정해두면 Spring이 Controller에 파라미터를 전달할 떄 유효성을 먼저 검사한다.
+유효하지 않은 모델이라면 <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/MethodArgumentNotValidException.html">MethodArgumentNotValidException</a> 예외를 던진다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebController</span> <span class="kd">implements</span> <span class="nc">WebMvcConfigurer</span> <span class="o">{</span>
+	<span class="nd">@PostMapping</span><span class="o">(</span><span class="s">"/"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">checkPersonInfo</span><span class="o">(</span><span class="nd">@Valid</span> <span class="nc">PersonForm</span> <span class="n">personForm</span><span class="o">,</span> <span class="nc">BindingResult</span> <span class="n">bindingResult</span><span class="o">)</span> <span class="o">{</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="n">bindingResult</span><span class="o">.</span><span class="na">hasErrors</span><span class="o">())</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="s">"form"</span><span class="o">;</span>
+		<span class="o">}</span>
+
+		<span class="k">return</span> <span class="s">"redirect:/results"</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="ios-개발에도-도움이-될-것-같다">iOS 개발에도 도움이 될 것 같다</h2>
+
+<p>유효성 검사를 위한 귀찮은 작업을 줄여줘서 너무 좋다. 스프링에서 이렇게 좋은 기술을 발견하면 iOS 개발에도 어떻게 하면 가져올 수 있을까 고민이 된다.
+Swift에는 어노테이션과 동일한 것은 아니지만 <a href="https://www.swiftbysundell.com/tips/attaching-property-wrappers-to-function-arguments/">약간 비슷한 방식으로 argument에 property wrapper를 적용할 수 있다</a>.
+유효성 검사를 위한 기능을 만들 때 이런 아이디어를 실험해보면 좋겠다.</p>
+
+<p>요즘은 SDK 개발을 하는데 앱 개발 입장에서는 SDK도 일종의 서버가 된다. 그래서 그런지 차용해올 아이디어가 꽤 있는 것 같다.
+다른 플랫폼의 기술을 배우는건 시야를 넓혀주는 좋은 방법이라 생각한다.</p>
+
+<h2 id="일정">일정</h2>
+
+<p>아쉽지만 다른 일정 때문에 이번 주는 과제 해결하는데 3일 정도만 사용할 수 있었다. 
+시간을 더 효율적으로 사용하는 방법을 배워야 겠다. 사이드 프로젝트로 진행하고 있는 타이머 앱의 필요성을 한번 더 느꼈다.
+하고 싶은건 많고 시간은 부족한 사람들이 많지 않을까?
+아무튼 다음 주도 시간이 넉넉하진 않다. 지치지 않고 계속 학습할 방법을 찾아가야겠다.</p>]]></content><author><name></name></author><category term="Spring" /><category term="Spring" /><category term="Validation" /><summary type="html"><![CDATA[이번 주는 시간을 충분히 사용하지 못해서 아쉽지만, 아쉬운대로 회고하고 기록을 남겨본다.]]></summary></entry><entry><title type="html">@WebMvcTest 장단점</title><link href="https://cozzin.github.io/posts/WebMvcTest/" rel="alternate" type="text/html" title="@WebMvcTest 장단점" /><published>2022-08-02T12:00:00+00:00</published><updated>2022-08-02T12:44:28+00:00</updated><id>https://cozzin.github.io/posts/WebMvcTest</id><content type="html" xml:base="https://cozzin.github.io/posts/WebMvcTest/"><![CDATA[<p>코드숨 과제를 보면 @WebMvcTest 어노테이션을 활용해서 테스트하고 있다. 
+간편하게 테스트할 수 있는 기능을 제공해주지만 나는 과제를 진행하면서 이 어노테이션을 쓰지 않았다. 
+일단 내가 만들고 싶은 테스트 구조에서는 위의 어노테이션이 제대로 작동하지 않았기 때문에 쓸 수 없었다.</p>
+
+<h2 id="nested-test에서-사용불가능">Nested Test에서 사용 불가능</h2>
+
+<p>Spring 5.3 부터 Nested Test에서 사용 가능하게 되었다고 한다. 
+과제 프로젝트의 환경은 Spring-core:5.2.10 을 사용하고 있어서 여기서 테스트 해보진 못했다.
+작업 중인 프로젝트에서는 구조화된 테스트를 작성할지 WebMvcTest를 사용할지 둘 중 하나를 선택해야하는 상황이다.</p>
+
+<p><a href="https://github.com/spring-projects/spring-boot/issues/12470#issuecomment-717410503">Spring에 PR 올라와있는걸 보면</a> <code class="language-plaintext highlighter-rouge">searchEnclosingClass()</code> 이라는 것을 구현해서 테스트 가능하게 만들었다고 한다.
+구체적인 코드를 이해해보고 싶었는데, 맥락을 몰라서 그런지 이해하기가 굉장히 어렵다… 🥲 
+대략 이해한 내용은 Nested 테스트 상황을 고려해서 Root 클래스의 Context도 고려하는 방식으로 바뀐 것 같다.</p>
+
+<h2 id="webmvctest의-장점">WebMvcTest의 장점</h2>
+
+<p>구조화된 테스트를 작성하지 않는다고 가정하고 한번 탐구해보자. WebMvcTest를 사람들이 사용하는 이유가 있을 것이다.</p>
+
+<blockquote>
+  <p>If you want to focus only on the web layer and not start a complete ApplicationContext, consider using @WebMvcTest instead.</p>
+</blockquote>
+
+<p><a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.testing.spring-boot-applications.with-mock-environment">spring 문서</a>를 보면 <code class="language-plaintext highlighter-rouge">@SpringBootTest</code>는 스프링 서버를 전부 띄워서 테스트하는 반면,
+<code class="language-plaintext highlighter-rouge">@WebMvcTest</code>는 Web Layer만 테스트할 수 있도록 도와준다고 한다. 그리고 <code class="language-plaintext highlighter-rouge">@WebMvcTest(UserController.class)</code> 같이 Controller를 직접 지정하면 필요한 Context만 생성하게 된다.
+<code class="language-plaintext highlighter-rouge">@SpringBootTest</code> 보다는 좀 더 빠르다는 느낌을 받았다.</p>
+
+<p><a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.testing.spring-boot-applications.spring-mvc-tests">Auto-configured Spring MVC Tests</a> 자동으로 의존하는 컴포넌트들을 주입해주는 것도 장점이라고 한다.
+의존성을 하나하나 지정해주는 것을 나는 선호하지만, 이런 컴포넌트들이 굉장히 많아졌을 때 유연하게 대처할 수 있을 것 같다.</p>
+
+<h2 id="webmvctest의-한계">WebMvcTest의 한계</h2>
+
+<ul>
+  <li>완전한 통합 테스트가 필요할 떄가 있다 <a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.testing.spring-boot-applications.with-running-server">그럴 때는 @SpringBootTest를 사용하자</a></li>
+  <li>앞서 말한 구조화된 테스트를 작성하기 어렵다</li>
+  <li><code class="language-plaintext highlighter-rouge">@SpringBootTest</code> 보다는 빠르다고 하지만 유닛 테스트에 비하면 여전히 느린듯 하다.</li>
+</ul>
+
+<h2 id="의문">의문</h2>
+
+<ul>
+  <li>Controller에 필요한 의존성은 ApplicationContext 통해서 생성하고, @BeforeEach 에서 직접 Controller를 참조해줄 수 없을까?</li>
+</ul>]]></content><author><name></name></author><category term="Spring" /><category term="Spring" /><category term="MVC" /><category term="Test" /><summary type="html"><![CDATA[코드숨 과제를 보면 @WebMvcTest 어노테이션을 활용해서 테스트하고 있다. 간편하게 테스트할 수 있는 기능을 제공해주지만 나는 과제를 진행하면서 이 어노테이션을 쓰지 않았다. 일단 내가 만들고 싶은 테스트 구조에서는 위의 어노테이션이 제대로 작동하지 않았기 때문에 쓸 수 없었다.]]></summary></entry><entry><title type="html">Github Comment로 CircleCI 실행시키기</title><link href="https://cozzin.github.io/posts/trigger-circle-ci-from-github-comment/" rel="alternate" type="text/html" title="Github Comment로 CircleCI 실행시키기" /><published>2022-06-12T01:47:00+00:00</published><updated>2025-06-18T15:23:47+00:00</updated><id>https://cozzin.github.io/posts/trigger-circle-ci-from-github-comment</id><content type="html" xml:base="https://cozzin.github.io/posts/trigger-circle-ci-from-github-comment/"><![CDATA[<p><img src="/assets/images/2022-06-12-22-33-50.png" alt="" /></p>
+
+<p>안녕하세요! 요즘에는 Sendbird Chat 배포 자동화를 수정하고 있습니다.
+기존에는 <code class="language-plaintext highlighter-rouge">Jira 티켓 생성 -&gt; PM 승인 -&gt; 빌드 -&gt; 배포</code> 전체 프로세스를 자동화로 관리하고 있었는데요.
+4단계의 과정에서 에러가 끼어들면 전체 프로세스를 다시 시작해야하는 번거로움이 있었습니다.
+그리고 <code class="language-plaintext highlighter-rouge">master</code> 브랜치에 <code class="language-plaintext highlighter-rouge">tag</code>가 만들어지는 것을 트리거로 배포 배포 프로세스가 작동시켰는데,
+배포 과정에서 에러가 발생하면 <code class="language-plaintext highlighter-rouge">tag</code>를 삭제하고 <code class="language-plaintext highlighter-rouge">release</code> 브랜치를 다시 만들어야하는 어려움이 있었습니다.</p>
+
+<h2 id="목표">목표</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">빌드 -&gt; 배포</code> workflow만 분리하기</li>
+  <li><code class="language-plaintext highlighter-rouge">release</code> 브랜치에서 위의 workflow 트리거할 수 있게 해주자</li>
+</ul>
+
+<h2 id="원하는-때에-circleci-workflow-실행시키기">원하는 때에 CircleCI Workflow 실행시키기</h2>
+
+<p>일단은 CircleCI Job을 매뉴얼하게 시작시키는 방법을 알아보겠습니다.
+제일 원시적으로 CircleCI에 들어가서 버튼을 누르면 배포가 실행되게 할까 했는데, 생각보다 매뉴얼하게 실행하는게 귀찮습니다.
+<a href="https://support.circleci.com/hc/en-us/articles/360050351292-How-to-trigger-a-workflow-via-CircleCI-API-v2">How to trigger a workflow via CircleCI API v2</a>
+글을 보면 어떻게 매뉴얼하게 pipeline을 실행시키는지 알 수 있습니다. 
+<code class="language-plaintext highlighter-rouge">config.yml</code> 파일의 상단에 파라미터를 세팅할 수 있고, 그 파라미터가 true 인지 조건을 걸어두는 방법입니다. 
+솔직히 이것도 귀찮긴 하지만… 다른 방법을 못찾았어요.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">run_workflow_build_and_release</span><span class="pi">:</span>
+    <span class="na">default</span><span class="pi">:</span> <span class="kc">false</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">boolean</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="na">workflows</span><span class="pi">:</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="m">2</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">when</span><span class="pi">:</span> <span class="s">&lt;&lt; pipeline.parameters.run_workflow_build_and_release &gt;&gt;</span>
+    <span class="na">jobs</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">job_a</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(when 으로 조건 설정해뒀는데, condition에 대해 더 살펴보실 분은 <a href="https://support.circleci.com/hc/en-us/articles/360043638052-Conditional-steps-in-jobs-and-conditional-workflows">Conditional steps in jobs and conditional workflows
+</a> 추천 드립니다.)</p>
+
+<p>혹시나 기존 다른 workflow는 실행하고 싶지 않다! 하면 아래와 같이 not으로 조건 추가할 수도 있습니다.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="na">build-and-test-swift</span><span class="pi">:</span>
+<span class="na">when</span><span class="pi">:</span>
+    <span class="na">or</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">not</span><span class="pi">:</span> <span class="s">&lt;&lt; pipeline.parameters.run_workflow_build_and_release &gt;&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>이렇게 <code class="language-plaintext highlighter-rouge">config.yml</code> 파일을 수정해놓고 CircleCI에 <code class="language-plaintext highlighter-rouge">작업 프로젝트 &gt; 작업 브랜치</code>로 들어가보면 
+<code class="language-plaintext highlighter-rouge">Trigger Pipline</code> 이라는 버튼을 볼 수 있습니다.</p>
+
+<p><img src="/assets/images/2022-06-09-22-50-20.png" alt="" /></p>
+
+<p>Trigger Pipline을 누르면 어떤 파라미터를 넣어서 Pipeline을 시작할지 설정할 수 있습니다.
+하지만 <code class="language-plaintext highlighter-rouge">run_workflow_build_and_release</code> 대략 이런식으로 생긴 파라미터를 직접 넣어야하는
+상당한 불편함이 있습니다…</p>
+
+<p><img src="/assets/images/2022-06-09-22-56-46.png" alt="" /></p>
+
+<h2 id="circleci-api-통해서-workflow-실행시키기">CircleCI API 통해서 Workflow 실행시키기</h2>
+
+<p><a href="https://circleci.com/docs/api/v2/#operation/listPipelinesForProject">Trigger a new pipeline</a> 여기를 보면 
+API를 통해서 pipeline을 트리거할 수 있습니다. 
+여기에 파라미터를 추가하면 원하는 workflow만 실행시킬 수 있는 것이죠…!
+이쯤되서 말씀드리면 제가 생각하는 큰 그림은 <code class="language-plaintext highlighter-rouge">Github Comment 추가 -&gt; Github Action 발동 -&gt; Circle API 실행 -&gt; 배포 자동화 실행</code> 입니다.</p>
+
+<p>위의 사이트로 들어가보면 <code class="language-plaintext highlighter-rouge">Shell+Curl</code> 에서 어떻게 구성하면 되는지 예시가 나와 있습니다.
+저에게 맞는 방식으로 약간 수정해보면 다음과 같습니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre>curl <span class="nt">--request</span> POST <span class="se">\</span>
+  <span class="nt">--url</span> https://circleci.com/api/v2/project/gh/org-name/repo-name/pipeline <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s1">'Circle-Token: CIRCLE_CI_TOKEN'</span> <span class="se">\</span>
+  <span class="nt">--header</span> <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  <span class="nt">--data</span> <span class="s1">'{"branch":"release/4.0.0","parameters":{"run_workflow_build_and_release":true}}'</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">CIRCLE_CI_TOKEN</code>에는 <a href="https://circleci.com/docs/2.0/managing-api-tokens/#creating-a-personal-api-token">Personal API Token</a>을 전달해줘야 합니다.
+그러면 아래와 같이 response가 넘어오고 pipeline이 실행된 것을 확인할 수 있습니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="o">{</span>
+  <span class="s2">"number"</span> : 1234,
+  <span class="s2">"state"</span> : <span class="s2">"pending"</span>,
+  <span class="s2">"id"</span> : <span class="s2">"abcdefgh-39e8-1ab2-abcd-a385abcdefgh"</span>,
+  <span class="s2">"created_at"</span> : <span class="s2">"2022-06-09T14:26:39.437Z"</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="/assets/images/2022-06-09-23-28-43.png" alt="" /></p>
+
+<h2 id="circleci-api를-github-comment로-작동시키기">CircleCI API를 Github Comment로 작동시키기</h2>
+
+<h3 id="pr의-브랜치-정보-가져오기">PR의 브랜치 정보 가져오기</h3>
+
+<p>매번 CircleCI 들어가서 파라미터 넣어주기가 너무 귀찮으니까, 
+github pr에 comment로 명령어를 날리면 CircleCI API가 실행되도록 해보겠습니다.
+<code class="language-plaintext highlighter-rouge">예약어가 담긴 Comment 추가 -&gt; Github Action 실행</code> 하는 방법을 자세히 알고 싶은 분은 <a href="https://medium.com/@hongseongho/github-action%EC%9C%BC%EB%A1%9C-comment-bot-%EB%A7%8C%EB%93%A4%EA%B8%B0-422e6e471c8e">github action으로 comment bot 만들기</a> 글을 참고하시면 됩니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">.github/workflows</code> 아래에 다음과 같은 <code class="language-plaintext highlighter-rouge">pr-comment-bot.yml</code> 파일을 만들었습니다.
+유형이 pr이고, 코멘트에 <code class="language-plaintext highlighter-rouge">/bot deploy</code>가 있을 때 배포되는 조건입니다.
+workflow로 브랜치 정보가 들어올테니 코멘트에서 따로 브랜치 입력할 필요가 없습니다!</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="na">name</span><span class="pi">:</span> <span class="s">PR Comment Bot</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">issue_comment</span><span class="pi">:</span>
+    <span class="na">types</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">created</span><span class="pi">,</span> <span class="nv">edited</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">pull_request_comment</span><span class="pi">:</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="pi">|</span> 
+      <span class="s">contains(github.event.comment.html_url, '/pull/')</span>
+        <span class="s">&amp;&amp; contains(github.event.comment.body, '/bot deploy')</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">macos-latest</span><span class="pi">]</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy</span>
+        <span class="na">id</span><span class="pi">:</span> <span class="s">deploy-circle-ci</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">echo $</span>
+          <span class="s">DEPLOY_API_RESULT=$(curl --request POST --url https://circleci.com/api/v2/project/gh/organization-name/repository-name/pipeline --header 'Circle-Token: $' --header 'content-type: application/json' --data '{"branch":$,"parameters":{"run_workflow_build_and_release":true}}')</span>
+          <span class="s">echo "DEPLOY_API_RESULT: ${DEPLOY_API_RESULT}"</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>이렇게 깔끔하게 사용하고 싶었는데… <code class="language-plaintext highlighter-rouge">github.base_ref</code>, <code class="language-plaintext highlighter-rouge">github.ref_name</code>가 빈 값으로 들어오네요ㅠ 
+github json으로 들어오는걸 dump 떠보면 좋을 것 같은데요. 이렇게 하면 json 내용이 다 보입니다.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">print_variables</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">macos-latest</span><span class="pi">]</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Dump GitHub context</span>
+        <span class="na">env</span><span class="pi">:</span>
+          <span class="na">GITHUB_CONTEXT</span><span class="pi">:</span> <span class="s">${{ toJson(github) }}</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">echo "$GITHUB_CONTEXT"</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="rouge-code"><pre><span class="p">{</span><span class="w">
+  </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"***"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"job"</span><span class="p">:</span><span class="w"> </span><span class="s2">"print_variables"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"ref"</span><span class="p">:</span><span class="w"> </span><span class="s2">"refs/heads/main"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"sha"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5cb8257ec0b8fd************************"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"repository"</span><span class="p">:</span><span class="w"> </span><span class="s2">"repository"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"repository_owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"repository_owner"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"repository_owner_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"repository_owner_id"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"repositoryUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"git://github.com/organization_name/repository_name.git"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"run_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"247965****"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"repository_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"43168****"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"actor_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1164****"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"actor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cozzin"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"workflow"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR Comment Bot"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"head_ref"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">이게</span><span class="w"> </span><span class="err">비어</span><span class="w"> </span><span class="err">있음...</span><span class="w">
+  </span><span class="nl">"base_ref"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">이게</span><span class="w"> </span><span class="err">비어</span><span class="w"> </span><span class="err">있음...</span><span class="w">
+  </span><span class="nl">"event_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"issue_comment"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"event"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"issue"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"body"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR Body!"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"number"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">이걸</span><span class="w"> </span><span class="err">활용할</span><span class="w"> </span><span class="err">수</span><span class="w"> </span><span class="err">있지</span><span class="w"> </span><span class="err">않을까?</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">head_ref</code>, <code class="language-plaintext highlighter-rouge">base_ref</code>는 비어 있는게 명확하게 확인되었고, 
+아마도 comment created로 접근하면 이 내용이 없는 것 같습니다.
+<code class="language-plaintext highlighter-rouge">github.event.issue.number</code>를 활용해보겠습니다. 
+<code class="language-plaintext highlighter-rouge">gh</code>는 github cli 명령어 인데
+터미널에서 github과 소통을 효율적으로 할 수 있습니다. 
+<code class="language-plaintext highlighter-rouge">gh pr checkout {이슈번호}</code>로 요청하면 PR이 있는 브랜치로 checkout 할 수 있습니다! 
+그리고 <code class="language-plaintext highlighter-rouge">git branch --show-current</code> 통해서 현재 브랜치명을 가져왔습니다.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout code</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v3</span>
+<span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">gh pr checkout $ISSUE</span>
+  <span class="na">env</span><span class="pi">:</span>
+    <span class="na">GITHUB_TOKEN</span><span class="pi">:</span> <span class="s">$</span>
+    <span class="na">ISSUE</span><span class="pi">:</span> <span class="s">$</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Get pr head branch</span>
+  <span class="na">run</span><span class="pi">:</span> <span class="s">echo 'PR_HEAD_BRACNH='$(git branch --show-current) &gt;&gt; $GITHUB_ENV</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>아쉽게도 PR이 타켓으로 하는 브랜치를 가져오지는 못했는데요;;
+일단 현재 브랜치까지는 가져왔으니 좀 더 진행해보겠습니다.
+(브랜치를 더 효율적으로 가져올 수 있는 방법을 아는 분은 알려주시면 정말 감사하겠습니다ㅠㅠ)</p>
+
+<h3 id="pr-브랜치가-release-or-hotfix-인지-확인하기">PR 브랜치가 release or hotfix 인지 확인하기</h3>
+
+<p>이렇게 되면 모든 브랜치의 코멘트에서 배포 명령을 실행할 수 있는 상태가 됩니다.
+거의 그런 일은 없겠지만 실수를 방지하기 위해서 PR의 작업 브랜치가 배포할 수 있는 브랜치인지 확인해보겠습니다.
+Deploy 단계 전에 아래의 step을 추가하면 됩니다!</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Check deployable branch</span>
+  <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">if [[ $input == release* ]] || [[ $input == hotfix* ]];</span>
+      <span class="s">then</span>
+      <span class="s">echo "it's deployable 🚀"</span>
+    <span class="s">else</span>
+      <span class="s">echo "it's not deployable 🙅"</span>
+      <span class="s">exit 1</span>
+    <span class="s">fi</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>그러면 배포 하면 안되는 브랜치에서 코멘트 날린 경우에는 아래와 같이 걸러지게 됩니다. 당연히 <code class="language-plaintext highlighter-rouge">Deploy</code> step은 실행되지 않아서 실수로 배포되는 경우는 없습니다.</p>
+
+<p><img src="/assets/images/2022-06-12-22-30-01.png" alt="" /></p>
+
+<h2 id="결론">결론</h2>
+
+<p>이제 PR에 코멘트를 입력해서 배포를 시작할 수 있습니다! 브랜치명을 입력할 필요 없고, 배포되어서 안되는 브랜치에서 배포될 일도 없습니다.</p>
+
+<p><img src="/assets/images/2022-06-12-22-33-50.png" alt="" /></p>
+
+<p>아래는 github action 전체 코드 입니다.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+</pre></td><td class="rouge-code"><pre><span class="na">name</span><span class="pi">:</span> <span class="s">PR Comment Bot</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">issue_comment</span><span class="pi">:</span>
+    <span class="na">types</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">created</span><span class="pi">,</span> <span class="nv">edited</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">pull_request_comment</span><span class="pi">:</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="pi">|</span> 
+      <span class="s">contains(github.event.comment.html_url, '/pull/')</span>
+        <span class="s">&amp;&amp; contains(github.event.comment.body, '/bot deploy')</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">macos-latest</span><span class="pi">]</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Add deploy comment</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/github-script@v5</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">github-token</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">script</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">github.rest.issues.createComment({</span>
+              <span class="s">issue_number: context.issue.number,</span>
+              <span class="s">owner: context.repo.owner,</span>
+              <span class="s">repo: context.repo.repo,</span>
+              <span class="s">body: "🐣 Preparing request to circleci"</span>
+            <span class="s">})</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout code</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v3</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">gh pr checkout $ISSUE</span>
+        <span class="na">env</span><span class="pi">:</span>
+          <span class="na">GITHUB_TOKEN</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">ISSUE</span><span class="pi">:</span> <span class="s">$</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Get pr head branch</span>
+        <span class="na">id</span><span class="pi">:</span> <span class="s">get-pr-head-branch</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">echo ::set-output name=PR_HEAD_BRACNH::$(git branch --show-current)</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Check deployable branch</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">if [[ $input == release* ]] || [[ $input == hotfix* ]];</span>
+            <span class="s">then</span>
+            <span class="s">echo "it's deployable 🚀"</span>
+          <span class="s">else</span>
+            <span class="s">echo "it's not deployable 🙅"</span>
+            <span class="s">exit 1</span>
+          <span class="s">fi</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy</span>
+        <span class="na">id</span><span class="pi">:</span> <span class="s">deploy-circle-ci</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">DEPLOY_API_RESULT=$(curl --request POST --url https://circleci.com/api/v2/project/gh/$YOUR_ORGANIZATION/$YOUR_REPOSITORY/pipeline --header 'Circle-Token: $' --header 'content-type: application/json' --data '{"branch":"$","parameters":{"run_workflow_build_and_release":true}}')</span>
+          <span class="s">echo "DEPLOY_API_RESULT: ${DEPLOY_API_RESULT}"</span>
+          <span class="s">CIRCLE_CI_JOB_NUMBER=$( jq -r  '.number' &lt;&lt;&lt; "${DEPLOY_API_RESULT}" )</span>
+          <span class="s">echo ::set-output name=DEPLOY_COMMENT_BODY::"https://app.circleci.com/pipelines/github/$YOUR_ORGANIZATION/$YOUR_REPOSITORY/$CIRCLE_CI_JOB_NUMBER"</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Add deploy comment</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/github-script@v5</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">github-token</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">script</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">github.rest.issues.createComment({</span>
+              <span class="s">issue_number: context.issue.number,</span>
+              <span class="s">owner: context.repo.owner,</span>
+              <span class="s">repo: context.repo.repo,</span>
+              <span class="s">body: "🕊 Distribution in progress on circleci $"</span>
+            <span class="s">})</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>아마 서비스 마다 CI 서버를 다양하게 쓸거라서 아래 코드를 동일하게 쓸 수 있는 곳은 많이 없겠지만,
+여기까지 읽으신 분이라면 다양하게 활용 가능할 것 같습니다.
+긴 내용 읽어주셔서 감사합니다!!</p>]]></content><author><name></name></author><category term="CI" /><category term="Github" /><category term="Github Action" /><category term="CircleCI" /><category term="Deployment Automation" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">[도서] 클린 소프트웨어: Part2. 애자일 설계 (p.107~115)</title><link href="https://cozzin.github.io/posts/CleanSoftware/" rel="alternate" type="text/html" title="[도서] 클린 소프트웨어: Part2. 애자일 설계 (p.107~115)" /><published>2022-02-05T03:00:00+00:00</published><updated>2022-02-05T03:00:00+00:00</updated><id>https://cozzin.github.io/posts/CleanSoftware</id><content type="html" xml:base="https://cozzin.github.io/posts/CleanSoftware/"><![CDATA[<blockquote>
+  <p>애자일 팀에서, 큰 그림은 소프트웨어와 함께 발전한다. 각 반복에서 팀은 시스템의 설계를 개 선해 지금 그대로도 충분히 가능한 한 제일 좋은 시스템이 되도록 한다. 나중의 요구사항과 필요에 대해서는 그리 오래 생각하지 않는다. 그리고 내일 필요해질 것이라고 생각하는 기능 을 지원하기 위해 오늘 기반구조(infrastructure)를 짜 맞추려 하지도 않는다. 그보다는，현재 구조에 초점을 두고 더욱 개선하기 위해 노력한다. p.108</p>
+</blockquote>
+
+<p>애자일 설계에 대한 요약이라고 볼 수 있다. 기반구조를 만들어 놓고 기능을 추가하는 방식이 아니다. 나중에 수고가 더 많이 드는 것이 아닌가 하는 의문이 든다.</p>
+
+<h3 id="잘못된-설계의-증상">잘못된 설계의 증상</h3>
+<ol>
+  <li>경직성(Rigidity): 설계를 변경하기 어려움</li>
+  <li>취약성(Fragility): 설계가 망가지기 쉬움. 한 군데 변경 -&gt; 많은 부분이 잘못되는 경향</li>
+  <li>부동성(Immobility): 설계를 재사용하기 어려움. 다른 시스템에서 유용하게 쓸 수 있는 부분이 있지만 분리하기 어려움.</li>
+  <li>점착성(Viscosity): 제대로 동작하기 어려움. [소프트웨어 점착성] 변경이 필요할 때 설계를 유지하지 않는 방식이 더 쉬운 경우. [환경의 점착성] 개발 환경 느리고 비효율적인 경우.</li>
+  <li>불필요한 복잡성(Needless Complexity): 과도한 설계. 현재 시점에서 유용하지 않은 요소가 포함됨.</li>
+  <li>불필요한 반복(Needless Repetition): 마우스 남용. 같은 코드가 조금씩 다른 형태로 계속 반복되어 나타나면서, <strong>개발자는 추상화된 개념을 잃게 된다.</strong></li>
+  <li>불투명성(Opacity): 혼란스러운 표현</li>
+</ol>
+
+<blockquote>
+  <p>이 착취는 코드의 작은 부분이 아니라 소프트웨어의 전체 구조로 고루 퍼져 나간다.</p>
+</blockquote>
+
+<h3 id="원칙">원칙</h3>
+<p>위의 증상들을 완화시켜주는 원칙들</p>
+
+<blockquote>
+  <ol>
+    <li>SRP: 단일 책임 원칙</li>
+    <li>OCP: 개발 폐쇄 원칙</li>
+    <li>LSP: 리스코프 치환 원칙</li>
+    <li>DIP: 의존 관계 역전 원칙</li>
+    <li>ISP: 인터페이스 분리 원칙</li>
+  </ol>
+</blockquote>
+
+<h3 id="악취와-원칙">악취와 원칙</h3>
+<blockquote>
+  <p>아무 악취도 나지 않을 때는 원칙을 적용하지 않는다. p.109</p>
+</blockquote>
+
+<h2 id="chapter7-애자일-설계란-무엇인가">Chapter7. 애자일 설계란 무엇인가?</h2>
+
+<blockquote>
+  <p>“소프트웨어 개발생명주기를 검토한후, 공학 설계의 기준을 실제로 만족시킬
+유일한 소프트웨어 문서는 소스 코드 목록뿐임을 알 수 있었다.”
+잭 리브스(Jack Reeves)</p>
+</blockquote>
+
+<blockquote>
+  <p>결국，소스 코드가 바로 설계다.</p>
+</blockquote>
+
+<h3 id="소프트웨어에서-어떤-것이-잘못되는가">소프트웨어에서 어떤 것이 잘못되는가?</h3>
+
+<blockquote>
+  <p>기존 시스 템은 계속 발전하고 변경되며, 새로운 설계는 그것을 쫓아가야 한다. 새로운 설계가 첫 번째 릴리즈에 이르기도 전에 혹과 궤양이 새로운 설계에 생기는 셈이다.</p>
+</blockquote>
+
+<p>어떻게 보면 아무리 노력해도 언제나 새로운 레거시가 만들어지는 셈이다.</p>
+
+<h3 id="무엇이-소프트웨어-부패를-촉진하는가">무엇이 소프트웨어 부패를 촉진하는가?</h3>
+
+<blockquote>
+  <p>변경에 대해서도 탄력적인 설계를 만드는 방 식을 찾아야 하고, 그것이 부패하지 않도록 보호할 수 있는 방식을 사용해야 한다.</p>
+</blockquote>
+
+<h3 id="애자일-팀은-소프트웨어가-부패하도록-내버려두지-않는다">애자일 팀은 소프트웨어가 부패하도록 내버려두지 않는다</h3>
+
+<blockquote>
+  <p>시스템의 설계를 가능한 한 명료하고 단순하게 유지하고, 이것을 많은 단위 테스트와 인수 테스트로 뒷받침한다. 이런 작업을 통해 설계를 유연하고 변경하기 쉬운 것으로 유지할 수 있다.</p>
+</blockquote>
+
+<p>테스트가 설계의 유연함을 돕는다고 한다. 리팩토링할 때 자신감을 심어주기 때문인 것으로 생각된다. 반면 경험이 없는 나는 테스트 코드가 있을 때 테스트 코드를 신경써야 하기 떄문에 쉽다는 느낌은 들지 않았다. 좀 더 경험을 쌓아봐야겠다.</p>
+
+<h3 id="copy-프로그램">‘Copy’ 프로그램</h3>]]></content><author><name></name></author><summary type="html"><![CDATA[애자일 팀에서, 큰 그림은 소프트웨어와 함께 발전한다. 각 반복에서 팀은 시스템의 설계를 개 선해 지금 그대로도 충분히 가능한 한 제일 좋은 시스템이 되도록 한다. 나중의 요구사항과 필요에 대해서는 그리 오래 생각하지 않는다. 그리고 내일 필요해질 것이라고 생각하는 기능 을 지원하기 위해 오늘 기반구조(infrastructure)를 짜 맞추려 하지도 않는다. 그보다는，현재 구조에 초점을 두고 더욱 개선하기 위해 노력한다. p.108]]></summary></entry></feed>

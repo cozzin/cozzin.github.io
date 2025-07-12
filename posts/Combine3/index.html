@@ -1,0 +1,243 @@
+<!doctype html><html lang="en" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover" ><meta name="generator" content="Jekyll v4.4.1" /><meta property="og:title" content="[Combine 책 정리] Chatper 3: Transforming Operators" /><meta property="og:locale" content="en" /><meta name="description" content="이번 챕터는 Operator!" /><meta property="og:description" content="이번 챕터는 Operator!" /><link rel="canonical" href="https://cozzin.github.io/posts/Combine3/" /><meta property="og:url" content="https://cozzin.github.io/posts/Combine3/" /><meta property="og:site_name" content="cozzin tech blog" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2021-01-12T03:07:00+00:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="[Combine 책 정리] Chatper 3: Transforming Operators" /><meta name="twitter:site" content="@_cozzin" /><meta name="google-site-verification" content="BX592gAt9i85NnZcSnLYnQWVTRN7wZy0vn94Bkx3wS4" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2021-03-28T11:45:47+00:00","datePublished":"2021-01-12T03:07:00+00:00","description":"이번 챕터는 Operator!","headline":"[Combine 책 정리] Chatper 3: Transforming Operators","mainEntityOfPage":{"@type":"WebPage","@id":"https://cozzin.github.io/posts/Combine3/"},"url":"https://cozzin.github.io/posts/Combine3/"}</script><title>[Combine 책 정리] Chatper 3: Transforming Operators | cozzin tech blog</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="cozzin tech blog"><meta name="application-name" content="cozzin tech blog"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="preconnect" href="https://cdnjs.cloudflare.com" ><link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" ><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="/assets/css/jekyll-theme-chirpy.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.25.0/dist/tocbot.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.min.css"> <script type="text/javascript"> class ModeToggle { static get MODE_KEY() { return 'mode'; } static get MODE_ATTR() { return 'data-mode'; } static get DARK_MODE() { return 'dark'; } static get LIGHT_MODE() { return 'light'; } static get ID() { return 'mode-toggle'; } constructor() { if (this.hasMode) { if (this.isDarkMode) { if (!this.isSysDarkPrefer) { this.setDark(); } } else { if (this.isSysDarkPrefer) { this.setLight(); } } } let self = this; /* always follow the system prefers */ this.sysDarkPrefers.addEventListener('change', () => { if (self.hasMode) { if (self.isDarkMode) { if (!self.isSysDarkPrefer) { self.setDark(); } } else { if (self.isSysDarkPrefer) { self.setLight(); } } self.clearMode(); } self.notify(); }); } /* constructor() */ get sysDarkPrefers() { return window.matchMedia('(prefers-color-scheme: dark)'); } get isSysDarkPrefer() { return this.sysDarkPrefers.matches; } get isDarkMode() { return this.mode === ModeToggle.DARK_MODE; } get isLightMode() { return this.mode === ModeToggle.LIGHT_MODE; } get hasMode() { return this.mode != null; } get mode() { return sessionStorage.getItem(ModeToggle.MODE_KEY); } /* get the current mode on screen */ get modeStatus() { if (this.isDarkMode || (!this.hasMode && this.isSysDarkPrefer)) { return ModeToggle.DARK_MODE; } else { return ModeToggle.LIGHT_MODE; } } setDark() { document.documentElement.setAttribute(ModeToggle.MODE_ATTR, ModeToggle.DARK_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); } setLight() { document.documentElement.setAttribute(ModeToggle.MODE_ATTR, ModeToggle.LIGHT_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); } clearMode() { document.documentElement.removeAttribute(ModeToggle.MODE_ATTR); sessionStorage.removeItem(ModeToggle.MODE_KEY); } /* Notify another plugins that the theme mode has changed */ notify() { window.postMessage( { direction: ModeToggle.ID, message: this.modeStatus }, '*' ); } flipMode() { if (this.hasMode) { if (this.isSysDarkPrefer) { if (this.isLightMode) { this.clearMode(); } else { this.setLight(); } } else { if (this.isDarkMode) { this.clearMode(); } else { this.setDark(); } } } else { if (this.isSysDarkPrefer) { this.setLight(); } else { this.setDark(); } } this.notify(); } /* flipMode() */ } /* ModeToggle */ const modeToggle = new ModeToggle(); </script><body><aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end"><header class="profile-wrapper"> <a href="/" id="avatar" class="rounded-circle"><img src="https://www.gravatar.com/avatar/dfaafc6813bb1a0c426f61cca77c7801?s=256" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a><h1 class="site-title"> <a href="/">cozzin tech blog</a></h1><p class="site-subtitle fst-italic mb-0">Dreaming of sustainable software development</p></header><nav class="flex-column flex-grow-1 w-100 ps-0"><ul class="nav"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle"></i> <span>ABOUT</span> </a><li class="nav-item"> <a href="/notes/" class="nav-link"> <i class="fa-fw fas fa-sticky-note"></i> <span>NOTES</span> </a></ul></nav><div class="sidebar-bottom d-flex flex-wrap align-items-center w-100"> <button type="button" class="mode-toggle btn" aria-label="Switch Mode"> <i class="fas fa-adjust"></i> </button> <span class="icon-border"></span> <a href="https://github.com/cozzin" aria-label="github" target="_blank" rel="noopener noreferrer" > <i class="fab fa-github"></i> </a> <a href="https://twitter.com/_cozzin" aria-label="twitter" target="_blank" rel="noopener noreferrer" > <i class="fab fa-twitter"></i> </a> <a href="javascript:location.href = 'mailto:' + ['hsh3592','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></aside><div id="main-wrapper" class="d-flex justify-content-center"><div class="container d-flex flex-column px-xxl-5"><header id="topbar-wrapper" aria-label="Top Bar"><div id="topbar" class="d-flex align-items-center justify-content-between px-lg-3 h-100" ><nav id="breadcrumb" aria-label="Breadcrumb"> <span> <a href="/">Home</a> </span> <span>[Combine 책 정리] Chatper 3: Transforming Operators</span></nav><button type="button" id="sidebar-trigger" class="btn btn-link"> <i class="fas fa-bars fa-fw"></i> </button><div id="topbar-title"> Post</div><button type="button" id="search-trigger" class="btn btn-link"> <i class="fas fa-search fa-fw"></i> </button> <search class="align-items-center ms-3 ms-lg-0"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..." > </search> <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">Cancel</button></div></header><div class="row flex-grow-1"><main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4"><p>이번 챕터는 Operator!</p><h3 id="operators-and-publishers"><span class="me-2">Operators and publishers</span><a href="#operators-and-publishers" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><ul><li>operator method는 사실 publisher를 return 함<li>upstream data -&gt; operator 에서 가공 -&gt; downstream으로 전달<li>error handling을 위한 operator가 아니면, error를 downstream으로 흘려보내줌<li>(이번 챕터에서는 에러 핸들링 다루지 않음)</ul><h2 id="collecting-values"><span class="me-2">Collecting Values</span><a href="#collecting-values" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="collect"><span class="me-2">collect()</span><a href="#collect" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><ul><li>개별 value -&gt; array로 변경<li>value를 버퍼에 쌓고, completion 때 array로 만들어줌</ul><p><a href="/assets/collect.png" class="popup img-link shimmer"><img src="/assets/collect.png" alt="collect" loading="lazy"></a></p><div class="language-swift highlighter-rouge"><div class="code-header"> <span data-label-text="Swift"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="nf">example</span><span class="p">(</span><span class="nv">of</span><span class="p">:</span> <span class="s">"collect"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="s">"A"</span><span class="p">,</span> <span class="s">"B"</span><span class="p">,</span> <span class="s">"C"</span><span class="p">,</span> <span class="s">"D"</span><span class="p">,</span> <span class="s">"E"</span><span class="p">]</span><span class="o">.</span><span class="n">publisher</span>
+        <span class="o">.</span><span class="nf">collect</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">// stream을 2개씩 묶은 array로 만들어줌</span>
+        <span class="o">.</span><span class="nf">sink</span><span class="p">(</span><span class="nv">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">},</span>
+              <span class="nv">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+        <span class="o">.</span><span class="nf">store</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
+<span class="p">}</span>
+
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre>——— Example of: collect ———
+["A", "B"]
+["C", "D"]
+["E"] // collect(2)가 채워지기 전에 stream이 끝나서 ["E"]로 출력됨
+finished
+
+</pre></table></code></div></div><p>collect(): 숫자 지정하지 않은 collect는</p><p>completion 될 때까지 무한정 array를 채울 수 있기 때문에 메모리 관리에 주의</p><h2 id="mapping-values"><span class="me-2">Mapping values</span><a href="#mapping-values" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="map_"><span class="me-2"><code class="language-plaintext highlighter-rouge">map(_:)</code></span><a href="#map_" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Swift의 standard map 처럼 동작함</p><p><a href="/assets/map.png" class="popup img-link shimmer"><img src="/assets/map.png" alt="다운로드 (3)" loading="lazy"></a></p><div class="language-swift highlighter-rouge"><div class="code-header"> <span data-label-text="Swift"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="k">let</span> <span class="nv">formatter</span> <span class="o">=</span> <span class="kt">NumberFormatter</span><span class="p">()</span>
+<span class="n">formatter</span><span class="o">.</span><span class="n">numberStyle</span> <span class="o">=</span> <span class="o">.</span><span class="n">spellOut</span>
+
+<span class="p">[</span><span class="mi">123</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">56</span><span class="p">]</span><span class="o">.</span><span class="n">publisher</span>
+    <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">formatter</span><span class="o">.</span><span class="nf">string</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">(</span><span class="nv">integerLiteral</span><span class="p">:</span> <span class="nv">$0</span><span class="p">))</span> <span class="p">??</span> <span class="s">""</span> <span class="p">}</span>
+    <span class="o">.</span><span class="nf">sink</span><span class="p">(</span><span class="nv">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+    <span class="o">.</span><span class="nf">store</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
+
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre>——— Example of: map ———
+one hundred twenty-three
+four
+fifty-six
+</pre></table></code></div></div><h3 id="map-key-paths"><span class="me-2">Map key paths</span><a href="#map-key-paths" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-swift highlighter-rouge"><div class="code-header"> <span data-label-text="Swift"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre><span class="k">let</span> <span class="nv">publisher</span> <span class="o">=</span> <span class="kt">PassthroughSubject</span><span class="o">&lt;</span><span class="kt">Coordinate</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span><span class="p">()</span>
+
+<span class="n">publisher</span>
+    <span class="o">.</span><span class="nf">map</span><span class="p">(\</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="p">\</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+    <span class="o">.</span><span class="nf">sink</span><span class="p">(</span><span class="nv">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="k">in</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s">"The coordinate at (</span><span class="se">\(</span><span class="n">x</span><span class="se">)</span><span class="s">, </span><span class="se">\(</span><span class="n">y</span><span class="se">)</span><span class="s">) is in quadrant"</span><span class="p">,</span> <span class="nf">quadrantOf</span><span class="p">(</span><span class="nv">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="nv">y</span><span class="p">:</span> <span class="n">y</span><span class="p">))</span>
+    <span class="p">})</span>
+    <span class="o">.</span><span class="nf">store</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
+
+<span class="n">publisher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">Coordinate</span><span class="p">(</span><span class="nv">x</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nv">y</span><span class="p">:</span> <span class="o">-</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">publisher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">Coordinate</span><span class="p">(</span><span class="nv">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">y</span><span class="p">:</span> <span class="mi">5</span><span class="p">))</span>
+
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>The coordinate at (10, -8) is in quadrant 4
+The coordinate at (0, 5) is in quadrant boundary
+
+</pre></table></code></div></div><ul><li>keyPath를 통해 바로 매핑해주는 방법<li>3개까지 프로퍼티 매핑이 가능함<li>.map { ($0.x, $0.y) } 보다 조금 더 간결하다는 점은 장점</ul><h3 id="trymap_"><span class="me-2"><code class="language-plaintext highlighter-rouge">tryMap(_:)</code></span><a href="#trymap_" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-swift highlighter-rouge"><div class="code-header"> <span data-label-text="Swift"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre><span class="kt">Just</span><span class="p">(</span><span class="s">"Directory name that does not exist"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">tryMap</span> <span class="p">{</span> <span class="k">try</span> <span class="kt">FileManager</span><span class="o">.</span><span class="k">default</span><span class="o">.</span><span class="nf">contentsOfDirectory</span><span class="p">(</span><span class="nv">atPath</span><span class="p">:</span> <span class="nv">$0</span><span class="p">)</span> <span class="p">}</span>
+    <span class="o">.</span><span class="nf">sink</span><span class="p">(</span><span class="nv">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">},</span>
+          <span class="nv">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+    <span class="o">.</span><span class="nf">store</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
+
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre>failure(Error Domain=NSCocoaErrorDomain Code=260 "The folder “Directory name that does not exist” doesn’t exist." UserInfo={NSUserStringVariant=(
+    Folder
+), NSFilePath=Directory name that does not exist, NSUnderlyingError=0x6000023e1ad0 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}})
+
+</pre></table></code></div></div><p>tryMap을 쓰면 클로저 안에서 error를 throw할 수 있음</p><h2 id="flattening-publishers"><span class="me-2">Flattening publishers</span><a href="#flattening-publishers" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="flatmapmaxpublishers__"><span class="me-2">flatMap(maxPublishers:_:_)</span><a href="#flatmapmaxpublishers__" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>여러개의 publisher upstream -&gt; single downstream으로 변환</p><div class="language-swift highlighter-rouge"><div class="code-header"> <span data-label-text="Swift"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="kd">func</span> <span class="nf">decode</span><span class="p">(</span><span class="n">_</span> <span class="nv">codes</span><span class="p">:</span> <span class="p">[</span><span class="kt">Int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="kt">Just</span><span class="p">(</span>
+        <span class="n">codes</span><span class="o">.</span><span class="n">compactMap</span> <span class="p">{</span> <span class="n">code</span> <span class="k">in</span>
+            <span class="nf">guard</span> <span class="p">(</span><span class="mi">32</span><span class="o">...</span><span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="nf">contains</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">nil</span> <span class="p">}</span>
+            <span class="k">return</span> <span class="kt">String</span><span class="p">(</span><span class="kt">UnicodeScalar</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="p">??</span> <span class="s">" "</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="o">.</span><span class="nf">joined</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="nf">eraseToAnyPublisher</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="p">[</span><span class="mi">72</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">108</span><span class="p">,</span> <span class="mi">108</span><span class="p">,</span> <span class="mi">111</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">111</span><span class="p">,</span> <span class="mi">114</span><span class="p">,</span> <span class="mi">108</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">33</span><span class="p">]</span>
+    <span class="o">.</span><span class="n">publisher</span>
+    <span class="o">.</span><span class="nf">collect</span><span class="p">()</span>
+    <span class="o">.</span><span class="nf">flatMap</span><span class="p">(</span><span class="n">decode</span><span class="p">)</span>
+    <span class="o">.</span><span class="nf">sink</span><span class="p">(</span><span class="nv">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+    <span class="o">.</span><span class="nf">store</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
+
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>Hello, World!
+</pre></table></code></div></div><p>여기서는 publisher에서 방출된 array를 단일 string으로 변경해줌</p><p>이걸로는 별로 와닿지 않는다…</p><p>다수의 upstream으로 부터 무한정 value가 전달되면 memory 이슈가 발생하게 된다</p><p><a href="/assets/flatMap.png" class="popup img-link shimmer"><img src="/assets/flatMap.png" alt="다운로드 (4)" loading="lazy"></a></p><p>그래서 maxPublishers에 Demand를 입력하면 되는데…</p><p>이번 챕터에서는 이것에 대한 예제가 없다ㅠ 챕터19가서 확인하라고 함</p><h2 id="replacing-upstream-output"><span class="me-2">Replacing upstream output</span><a href="#replacing-upstream-output" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="replacenilwith"><span class="me-2">replaceNil(with:)</span><a href="#replacenilwith" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>optional을 특정 값으로 바꿔줌</p><p><a href="/assets/replaceNil.png" class="popup img-link shimmer"><img src="/assets/replaceNil.png" alt="다운로드 (5)" loading="lazy"></a></p><div class="language-swift highlighter-rouge"><div class="code-header"> <span data-label-text="Swift"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre><span class="p">[</span><span class="s">"A"</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="s">"C"</span><span class="p">]</span><span class="o">.</span><span class="n">publisher</span>
+    <span class="o">.</span><span class="nf">eraseToAnyPublisher</span><span class="p">()</span> <span class="c1">// Combine Bug 방어 위해 사용</span>
+    <span class="o">.</span><span class="nf">replaceNil</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="s">"-"</span><span class="p">)</span> <span class="c1">// nil -&gt; "-"</span>
+    <span class="o">.</span><span class="nf">sink</span><span class="p">(</span><span class="nv">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+    <span class="o">.</span><span class="nf">store</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
+
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre>A
+-
+C
+
+</pre></table></code></div></div><p>eraseToAnyPublisher가 특이하게 끼어들어가 있는데</p><p>Combine에 현재는 버그가 있는듯: <a href="https://forums.swift.org/t/unexpected-behavior-of-replacenil-with/40800/5">https://forums.swift.org/t/unexpected-behavior-of-replacenil-with/40800/5</a></p><p>위의 체인에서 eraseToAnyPublisher가 없으면 아래와 같은 결과가 나옴</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>Optional("A")
+Optional("-")
+Optional("C")
+</pre></table></code></div></div><p>?? 를 쓰는거랑 replaceNil을 쓰는건 차이가 있음</p><p>?? 는 nil result를 만들 수 있음</p><p>replaceNil은 nil이 아닌 result만 만들 수 있음</p><p>만약 위의 체인에서 아래와 같이 변경한다면</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>.replaceNil(with: "-" as String?)
+</pre></table></code></div></div><p><a href="/assets/replaceNilError.png" class="popup img-link shimmer"><img src="/assets/replaceNilError.png" alt="다운로드 (6)" loading="lazy"></a></p><p>이렇게 에러가 뜨게됨</p><h3 id="replaceemptywith"><span class="me-2">replaceEmpty(with:)</span><a href="#replaceemptywith" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>upstream에서 value가 emit되지 않고 completion 되면, value를 하나 넣어주는 것</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre>let empty = Empty&lt;Int, Never&gt;()
+
+empty
+    .replaceEmpty(with: 1)
+    .sink(receiveCompletion: { print($0) },
+          receiveValue: { print($0) })
+    .store(in: &amp;subscriptions)
+
+
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>1
+finished
+
+</pre></table></code></div></div><h2 id="incrementallytransformingoutput"><span class="me-2">Incrementally transforming output</span><a href="#incrementallytransformingoutput" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="scan__"><span class="me-2"><code class="language-plaintext highlighter-rouge">scan(_:_:)</code></span><a href="#scan__" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>value를 누적해서 계산할 수 있음</p><p><a href="/assets/scan.png" class="popup img-link shimmer"><img src="/assets/scan.png" alt="다운로드 (7)" loading="lazy"></a></p><div class="language-swift highlighter-rouge"><div class="code-header"> <span data-label-text="Swift"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre><span class="k">var</span> <span class="nv">dailyGainLoss</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span> <span class="o">.</span><span class="nf">random</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="o">-</span><span class="mi">10</span><span class="o">...</span><span class="mi">10</span><span class="p">)</span> <span class="p">}</span>
+
+<span class="k">let</span> <span class="nv">august2019</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="o">..&lt;</span><span class="mi">22</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span> <span class="n">dailyGainLoss</span> <span class="p">}</span>
+    <span class="o">.</span><span class="n">publisher</span>
+
+<span class="n">august2019</span>
+    <span class="o">.</span><span class="nf">scan</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="p">{</span> <span class="n">latest</span><span class="p">,</span> <span class="n">current</span> <span class="k">in</span>
+        <span class="nf">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">latest</span> <span class="o">+</span> <span class="n">current</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="o">.</span><span class="nf">sink</span><span class="p">(</span><span class="nv">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span> <span class="p">})</span>
+    <span class="o">.</span><span class="nf">store</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">subscriptions</span><span class="p">)</span>
+</pre></table></code></div></div><p><a href="/assets/scanResult.png" class="popup img-link shimmer"><img src="/assets/scanResult.png" alt="다운로드 (8)" loading="lazy"></a></p><h2 id="challenge-create-a-phone-number-lookup-using-transforming-operators"><span class="me-2">Challenge: Create a phone number lookup using transforming operators </span><a href="#challenge-create-a-phone-number-lookup-using-transforming-operators" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>도전과제: 전화번호 찾기…!</p><ol><li>10자의 숫자 또는 문자를 받음<li>연락처를 찾음</ol><div class="language-swift highlighter-rouge"><div class="code-header"> <span data-label-text="Swift"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre>    <span class="n">input</span>
+        <span class="o">.</span><span class="nf">map</span><span class="p">(</span><span class="n">convert</span><span class="p">)</span>
+        <span class="o">.</span><span class="nf">replaceNil</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="o">.</span><span class="nf">collect</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="o">.</span><span class="nf">map</span><span class="p">(</span><span class="n">format</span><span class="p">)</span>
+        <span class="o">.</span><span class="nf">map</span><span class="p">(</span><span class="n">dial</span><span class="p">)</span>
+        <span class="o">.</span><span class="nf">sink</span><span class="p">(</span><span class="nv">receiveValue</span><span class="p">:</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">})</span>
+
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre>——— Example of: Create a phone number lookup ———
+Contact not found for 000-123-4567
+Dialing Marin (408-555-4321)...
+Dialing Shai (212-555-3434)...
+
+</pre></table></code></div></div><p>미리 만들어진 함수들을 operator로 끼워넣었는데,</p><p>레고 블럭 조립하는 기분이었다.</p><p>그걸 느끼게 해주는 도전과제인듯</p><script src="/assets/js/tts-player.js"></script></main><aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 mb-5 text-muted"><div class="access"><section id="access-lastmod"><h2 class="panel-heading">Recently Updated</h2><ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2"><li class="text-truncate lh-lg"> <a href="/posts/app-store-deployment-experience-en/">Experiences of an App Store Deployment Manager - From Expedited Review to Scheduled Deployment</a><li class="text-truncate lh-lg"> <a href="/posts/trigger-circle-ci-from-github-comment/">Github Comment로 CircleCI 실행시키기</a><li class="text-truncate lh-lg"> <a href="/posts/app-store-deployment-experience/">앱 배포 담당자가 겪은 일들 - 긴급 심사부터 예약 배포까지</a><li class="text-truncate lh-lg"> <a href="/posts/codesoom-8week/">[코드숨] 스프링 회고</a><li class="text-truncate lh-lg"> <a href="/posts/create-aws-ec2-instance/">AWS EC2 생성하고 Github Repository Clone하기</a></ul></section><section><h2 class="panel-heading">Trending Tags</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/spring/">Spring</a> <a class="post-tag btn btn-outline-primary" href="/tags/swift/">swift</a> <a class="post-tag btn btn-outline-primary" href="/tags/combine/">combine</a> <a class="post-tag btn btn-outline-primary" href="/tags/app-store-connect/">App Store Connect</a> <a class="post-tag btn btn-outline-primary" href="/tags/app-store/">App Store</a> <a class="post-tag btn btn-outline-primary" href="/tags/ios/">iOS</a> <a class="post-tag btn btn-outline-primary" href="/tags/aws/">AWS</a> <a class="post-tag btn btn-outline-primary" href="/tags/circleci/">CircleCI</a> <a class="post-tag btn btn-outline-primary" href="/tags/cocoainternals/">CocoaInternals</a> <a class="post-tag btn btn-outline-primary" href="/tags/deployment-automation/">Deployment Automation</a></div></section></div></aside></div><div class="row"><div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4"><footer aria-label="Site Info" class=" d-flex flex-column justify-content-center text-muted flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3 " ><p>© <time>2025</time> <a href="https://twitter.com/_cozzin">홍성호</a>. <span data-bs-toggle="tooltip" data-bs-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author." >Some rights reserved.</span></p><p>Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener">Chirpy</a> theme.</p></footer></div></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-11 content"><div id="search-hints"><section><h2 class="panel-heading">Trending Tags</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/spring/">Spring</a> <a class="post-tag btn btn-outline-primary" href="/tags/swift/">swift</a> <a class="post-tag btn btn-outline-primary" href="/tags/combine/">combine</a> <a class="post-tag btn btn-outline-primary" href="/tags/app-store-connect/">App Store Connect</a> <a class="post-tag btn btn-outline-primary" href="/tags/app-store/">App Store</a> <a class="post-tag btn btn-outline-primary" href="/tags/ios/">iOS</a> <a class="post-tag btn btn-outline-primary" href="/tags/aws/">AWS</a> <a class="post-tag btn btn-outline-primary" href="/tags/circleci/">CircleCI</a> <a class="post-tag btn btn-outline-primary" href="/tags/cocoainternals/">CocoaInternals</a> <a class="post-tag btn btn-outline-primary" href="/tags/deployment-automation/">Deployment Automation</a></div></section></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><aside aria-label="Scroll to Top"> <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow"> <i class="fas fa-angle-up"></i> </button></aside></div><div id="mask"></div><script src="https://cdn.jsdelivr.net/combine/npm/jquery@3.7.1/dist/jquery.min.js,npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js,npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js,npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js,npm/magnific-popup@1.1.0/dist/jquery.magnific-popup.min.js,npm/clipboard@2.0.11/dist/clipboard.min.js,npm/dayjs@1.11.10/dayjs.min.js,npm/dayjs@1.11.10/locale/en.min.js,npm/dayjs@1.11.10/plugin/relativeTime.min.js,npm/dayjs@1.11.10/plugin/localizedFormat.min.js,npm/tocbot@4.25.0/dist/tocbot.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=UA-125862477-1"></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-125862477-1'); }); </script> <script> /* Note: dependent library will be loaded in `js-selector.html` */ SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<article class="px-1 px-sm-2 px-lg-4 px-xl-0"><header><h2><a href="{url}">{title}</a></h2><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div></header><p>{snippet}</p></article>', noResultsText: '<p class="mt-5"></p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script>
