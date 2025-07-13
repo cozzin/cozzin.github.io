@@ -10,15 +10,45 @@ class TTSPlayer {
     }
 
     init() {
+        console.log('TTS Player initializing...');
         this.createPlayerUI();
         this.bindEvents();
         this.checkAudioAvailability();
     }
 
     createPlayerUI() {
-        const article = document.querySelector('article') || document.querySelector('.content');
-        if (!article) return;
+        // 더 포괄적인 DOM 요소 찾기
+        const possibleContainers = [
+            document.querySelector('article'),
+            document.querySelector('.content'),
+            document.querySelector('main'),
+            document.querySelector('.post-content'),
+            document.querySelector('#main-content'),
+            document.querySelector('.container'),
+            document.querySelector('body')
+        ];
 
+        const container = possibleContainers.find(el => el !== null);
+        if (!container) {
+            console.error('TTS Player: No suitable container found');
+            return;
+        }
+
+        console.log('TTS Player: Using container', container);
+
+        // 더 포괄적인 제목 요소 찾기
+        const possibleTitles = [
+            container.querySelector('h1'),
+            container.querySelector('.post-title'),
+            container.querySelector('.title'),
+            container.querySelector('h2'),
+            document.querySelector('h1'),
+            document.querySelector('.post-title'),
+            document.querySelector('.title')
+        ];
+
+        const title = possibleTitles.find(el => el !== null);
+        
         // 음성 플레이어 UI 생성
         const playerHTML = `
             <div id="tts-player" class="tts-player">
@@ -44,10 +74,13 @@ class TTSPlayer {
             </div>
         `;
 
-        // 제목 바로 아래에 플레이어 삽입
-        const title = article.querySelector('h1') || article.querySelector('.post-title');
+        // 제목 요소가 있으면 그 다음에, 없으면 컨테이너 시작 부분에 삽입
         if (title) {
+            console.log('TTS Player: Inserting after title', title);
             title.insertAdjacentHTML('afterend', playerHTML);
+        } else {
+            console.log('TTS Player: Inserting at container start');
+            container.insertAdjacentHTML('afterbegin', playerHTML);
         }
 
         // CSS 스타일 추가
@@ -181,37 +214,47 @@ class TTSPlayer {
     }
 
     bindEvents() {
-        const playBtn = document.getElementById('tts-play-btn');
-        const summaryBtn = document.getElementById('tts-summary-btn');
-        const volumeControl = document.getElementById('tts-volume');
-        const volumeValue = document.getElementById('tts-volume-value');
+        // 이벤트 바인딩을 지연시켜서 DOM 요소가 생성된 후에 실행
+        setTimeout(() => {
+            const playBtn = document.getElementById('tts-play-btn');
+            const summaryBtn = document.getElementById('tts-summary-btn');
+            const volumeControl = document.getElementById('tts-volume');
+            const volumeValue = document.getElementById('tts-volume-value');
 
-        if (playBtn) {
-            playBtn.addEventListener('click', () => this.togglePlay());
-        }
+            console.log('TTS Player: Binding events to', { playBtn, summaryBtn, volumeControl });
 
-        if (summaryBtn) {
-            summaryBtn.addEventListener('click', () => this.playSummary());
-        }
+            if (playBtn) {
+                playBtn.addEventListener('click', () => this.togglePlay());
+            }
 
-        if (volumeControl) {
-            volumeControl.addEventListener('input', (e) => {
-                const volume = parseFloat(e.target.value);
-                if (this.currentAudio) {
-                    this.currentAudio.volume = volume;
-                }
-                volumeValue.textContent = Math.round(volume * 100) + '%';
-            });
-        }
+            if (summaryBtn) {
+                summaryBtn.addEventListener('click', () => this.playSummary());
+            }
+
+            if (volumeControl) {
+                volumeControl.addEventListener('input', (e) => {
+                    const volume = parseFloat(e.target.value);
+                    if (this.currentAudio) {
+                        this.currentAudio.volume = volume;
+                    }
+                    if (volumeValue) {
+                        volumeValue.textContent = Math.round(volume * 100) + '%';
+                    }
+                });
+            }
+        }, 100);
     }
 
     checkAudioAvailability() {
         const pageUrl = window.location.pathname;
         const audioFileName = this.getAudioFileName(pageUrl);
         
+        console.log('TTS Player: Checking audio for', pageUrl, 'filename:', audioFileName);
+        
         // 전체 음성 파일 확인
         this.checkAudioFile(`/assets/audio/${audioFileName}.mp3`)
             .then(exists => {
+                console.log('TTS Player: Full audio exists:', exists);
                 const playBtn = document.getElementById('tts-play-btn');
                 if (playBtn) {
                     playBtn.disabled = !exists;
@@ -224,6 +267,7 @@ class TTSPlayer {
         // 요약 음성 파일 확인
         this.checkAudioFile(`/assets/audio/${audioFileName}_summary.mp3`)
             .then(exists => {
+                console.log('TTS Player: Summary audio exists:', exists);
                 const summaryBtn = document.getElementById('tts-summary-btn');
                 if (summaryBtn) {
                     summaryBtn.disabled = !exists;
@@ -235,16 +279,38 @@ class TTSPlayer {
     }
 
     getAudioFileName(pageUrl) {
-        // URL에서 파일명 추출
-        const match = pageUrl.match(/\/notes\/([^\/]+)\//);
-        return match ? match[1] : 'unknown';
+        // URL에서 파일명 추출 - 더 견고한 방법
+        console.log('TTS Player: Parsing URL', pageUrl);
+        
+        // /notes/파일명/ 형태의 URL 매칭
+        let match = pageUrl.match(/\/notes\/([^\/]+)\/?$/);
+        if (match) {
+            const fileName = decodeURIComponent(match[1]);
+            console.log('TTS Player: Extracted filename:', fileName);
+            return fileName;
+        }
+        
+        // 다른 패턴들도 시도
+        match = pageUrl.match(/\/([^\/]+)\/$/);
+        if (match) {
+            const fileName = decodeURIComponent(match[1]);
+            console.log('TTS Player: Alternative filename:', fileName);
+            return fileName;
+        }
+        
+        console.log('TTS Player: Could not extract filename from URL');
+        return 'unknown';
     }
 
     async checkAudioFile(audioPath) {
         try {
+            console.log('TTS Player: Checking audio file:', audioPath);
             const response = await fetch(audioPath, { method: 'HEAD' });
-            return response.ok;
+            const exists = response.ok;
+            console.log('TTS Player: Audio file check result:', audioPath, exists);
+            return exists;
         } catch (error) {
+            console.error('TTS Player: Audio file check error:', error);
             return false;
         }
     }
@@ -370,9 +436,14 @@ class TTSPlayer {
 
 // 페이지 로드 시 TTS 플레이어 초기화
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('TTS Player: DOM loaded, current path:', window.location.pathname);
+    
     // notes 페이지에서만 TTS 플레이어 활성화
     if (window.location.pathname.includes('/notes/')) {
+        console.log('TTS Player: Initializing for notes page');
         new TTSPlayer();
+    } else {
+        console.log('TTS Player: Not a notes page, skipping initialization');
     }
 });
 
