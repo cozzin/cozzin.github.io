@@ -22,4 +22,187 @@ layout: default
   {% endif %}
 {% endif %}
 
-{{ content }} 
+<!-- Voice Listening Button -->
+<div id="voice-controls" style="margin-bottom: 20px; padding: 10px; background-color: #f8f9fa; border-radius: 5px; border: 1px solid #dee2e6;">
+  <button id="voice-button" onclick="toggleVoice()" style="
+    background-color: #007bff; 
+    color: white; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 4px; 
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+  ">
+    🔊 음성 듣기
+  </button>
+  <button id="pause-button" onclick="pauseVoice()" style="
+    background-color: #ffc107; 
+    color: #212529; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 4px; 
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+    display: none;
+  ">
+    ⏸️ 일시정지
+  </button>
+  <button id="stop-button" onclick="stopVoice()" style="
+    background-color: #dc3545; 
+    color: white; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 4px; 
+    cursor: pointer;
+    font-size: 14px;
+    display: none;
+  ">
+    ⏹️ 정지
+  </button>
+  <span id="voice-status" style="margin-left: 10px; font-size: 14px; color: #6c757d;"></span>
+</div>
+
+<div id="post-content">
+{{ content }}
+</div>
+
+<script>
+let speechSynthesis = window.speechSynthesis;
+let currentUtterance = null;
+let isPaused = false;
+let isPlaying = false;
+
+function toggleVoice() {
+  if (isPlaying) {
+    stopVoice();
+  } else {
+    startVoice();
+  }
+}
+
+function startVoice() {
+  // Get the post content
+  const postContent = document.getElementById('post-content');
+  const textToRead = postContent.innerText || postContent.textContent;
+  
+  // Create utterance
+  currentUtterance = new SpeechSynthesisUtterance(textToRead);
+  
+  // Set language based on page language
+  const pageLanguage = '{{ page.lang | default: "en" }}';
+  currentUtterance.lang = pageLanguage === 'ko-KR' ? 'ko-KR' : 'en-US';
+  
+  // Set voice properties
+  currentUtterance.rate = 0.9;
+  currentUtterance.pitch = 1.0;
+  currentUtterance.volume = 1.0;
+  
+  // Event listeners
+  currentUtterance.onstart = function() {
+    isPlaying = true;
+    isPaused = false;
+    updateButtons();
+    updateStatus('음성 재생 중...');
+  };
+  
+  currentUtterance.onend = function() {
+    isPlaying = false;
+    isPaused = false;
+    updateButtons();
+    updateStatus('');
+  };
+  
+  currentUtterance.onerror = function(event) {
+    console.error('Speech synthesis error:', event.error);
+    isPlaying = false;
+    isPaused = false;
+    updateButtons();
+    updateStatus('오류가 발생했습니다.');
+  };
+  
+  // Start speaking
+  speechSynthesis.speak(currentUtterance);
+}
+
+function pauseVoice() {
+  if (isPlaying && !isPaused) {
+    speechSynthesis.pause();
+    isPaused = true;
+    updateButtons();
+    updateStatus('일시정지됨');
+  } else if (isPaused) {
+    speechSynthesis.resume();
+    isPaused = false;
+    updateButtons();
+    updateStatus('음성 재생 중...');
+  }
+}
+
+function stopVoice() {
+  speechSynthesis.cancel();
+  isPlaying = false;
+  isPaused = false;
+  currentUtterance = null;
+  updateButtons();
+  updateStatus('');
+}
+
+function updateButtons() {
+  const voiceButton = document.getElementById('voice-button');
+  const pauseButton = document.getElementById('pause-button');
+  const stopButton = document.getElementById('stop-button');
+  
+  if (isPlaying) {
+    voiceButton.innerHTML = '🔊 재생 중...';
+    voiceButton.style.backgroundColor = '#28a745';
+    pauseButton.style.display = 'inline-block';
+    stopButton.style.display = 'inline-block';
+    
+    if (isPaused) {
+      pauseButton.innerHTML = '▶️ 계속';
+      pauseButton.style.backgroundColor = '#28a745';
+    } else {
+      pauseButton.innerHTML = '⏸️ 일시정지';
+      pauseButton.style.backgroundColor = '#ffc107';
+    }
+  } else {
+    voiceButton.innerHTML = '🔊 음성 듣기';
+    voiceButton.style.backgroundColor = '#007bff';
+    pauseButton.style.display = 'none';
+    stopButton.style.display = 'none';
+  }
+}
+
+function updateStatus(message) {
+  document.getElementById('voice-status').textContent = message;
+}
+
+// Check if speech synthesis is supported
+if (!('speechSynthesis' in window)) {
+  document.getElementById('voice-controls').innerHTML = 
+    '<p style="color: #dc3545; font-size: 14px;">죄송합니다. 이 브라우저는 음성 합성을 지원하지 않습니다.</p>';
+}
+</script>
+
+<style>
+#voice-button:hover {
+  opacity: 0.8;
+}
+
+#pause-button:hover {
+  opacity: 0.8;
+}
+
+#stop-button:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  #voice-controls button {
+    margin-bottom: 5px;
+    width: 100%;
+  }
+}
+</style> 
