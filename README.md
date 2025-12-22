@@ -36,6 +36,56 @@ bundle update
 ./tools/toggle-obsidian-public.sh private
 ```
 
+## 🤖 Claude Code 블로그 글쓰기 도구
+
+[Claude Code](https://claude.ai/claude-code)를 활용하여 블로그 글쓰기를 시작하고 완성할 수 있는 대화형 도구입니다.
+
+### 사용 가능한 명령어
+
+#### `/blog-start` - 아이디어 발굴 및 구체화
+막연한 아이디어를 구조화된 아웃라인으로 발전시킵니다.
+- 질문을 통한 주제 구체화
+- 아웃라인 자동 생성
+- 카테고리/태그 추천
+
+#### `/blog-draft` - 마크다운 초안 생성
+Jekyll + Chirpy 형식에 맞는 완전한 초안을 작성합니다.
+- Front Matter 자동 생성
+- 블로그 스타일 학습 및 적용
+- 파일명 자동 제안
+
+#### `/blog-publish` - 발행 전 최종 검증
+체크리스트 확인 및 Medium 변환을 제공합니다.
+- Front Matter 검증
+- 파일명 형식 확인
+- Medium용 마크다운 변환
+- Git 커밋 가이드
+
+### 사용 예시
+
+```bash
+# 1. 아이디어 구체화
+/blog-start
+> 2025년 회고 글을 쓰고 싶어요
+
+# 2. 초안 작성
+/blog-draft
+> 위 아웃라인으로 초안 작성해줘
+
+# 3. 발행 준비
+/blog-publish
+> [초안 내용 붙여넣기]
+```
+
+### 워크플로우
+
+1. **아이디어 구체화** (5-10분): `/blog-start`로 주제와 아웃라인 정리
+2. **초안 작성** (10-15분): `/blog-draft`로 마크다운 초안 생성
+3. **반복적 개선** (선택): 초안을 읽고 수정
+4. **발행** (5분): `/blog-publish`로 검증 후 Git 커밋
+
+**예상 소요 시간**: 아이디어부터 발행까지 약 35-60분
+
 ## 📊 분석 도구
 
 ### Google Analytics
